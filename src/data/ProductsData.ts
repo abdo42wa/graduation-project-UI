@@ -1,5 +1,6 @@
 const products = [
     {
+      id: 1,
       name: 'Airpods Wireless ',
       image: 'https://lt3.pigugroup.eu/colours/291/585/32/29158532/apple-airpods-pro-wireless-charging-case-mwp22zma-2b9ef_xbig.jpg',
       description:
@@ -12,6 +13,7 @@ const products = [
       numReviews: 12,
     },
     {
+      id: 2,
       name: 'iPhone 12 Pro ',
       image: 'https://telefas.lt/wp-content/uploads/2021/05/iphone-12-pro-max-gold.png',
       description:
@@ -24,6 +26,7 @@ const products = [
       numReviews: 8,
     },
     {
+      id: 3,
       name: 'Cannon EOS 80D DSLR Camera',
       image: 'https://www.canon.lt/media/EOS%2080D%20Default_tcm214-1351544.jpg',
       description:
@@ -36,6 +39,7 @@ const products = [
       numReviews: 12,
     },
     {
+      id: 4,
       name: 'Sony Playstation 4 Pro',
       image: 'https://www.varle.lt/static/uploads/products/814/zai/zaidimu-konsole-sony-playstation-4-ps4.jpg',
       description:
@@ -48,6 +52,7 @@ const products = [
       numReviews: 12,
     },
     {
+      id: 5,
       name: 'Logitech G-Series Gaming Mouse',
       image: 'https://kinect.lt/22705-medium_default/logitech-g-pro-wireless-gaming-mouse.jpg',
       description:
@@ -60,6 +65,7 @@ const products = [
       numReviews: 10,
     },
     {
+      id: 6,
       name: 'Amazon Echo Dot 3rd Generation',
       image: 'https://images.kaina24.lt/5188/82/amazon-echo-dot-3-1.jpg',
       description:

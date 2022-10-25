@@ -7,7 +7,7 @@ export const ProductList = () => {
 
        <Grid container>
        { products.map((product) =>(
-            <ProductCard name={product.name} image={product.image} price={product.price} key={product.name} />
+            <ProductCard id={product.id} name={product.name} image={product.image} price={product.price} key={product.id} />
             ))}
        </Grid>
   )
