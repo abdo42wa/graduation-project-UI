@@ -10,13 +10,13 @@ type Product = {
 export  const ProductCard = (product : Product) => {
 
   return (
-    <Grid item xl={2} lg={4}>
+    <Grid item  >
       <Link href={`/product/${product.id}`}>
 
-        <Card sx={{ maxWidth: 317,minHeight:440, pt:2 ,background: '#eeee' }}>
+        <Card sx={{ width:317, height:440 ,background: '#eeee' }}>
           <CardMedia
             component="img"
-            height="300"
+            height="320"
             image={product.image}
             alt={product.name}
             />
