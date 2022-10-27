@@ -6,6 +6,7 @@ type Product = {
     price: number;
     image: string;
     id: number;
+    rating:number;
 }
 export  const ProductCard = (product : Product) => {
 
