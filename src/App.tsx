@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Product from './product/Product';
 import Navbar from './components/Navbar';
 import CreateProduct from './admin/CreateProduct';
+import LoginPage from './login/LoginPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />
           <Route path='/create/product' element={<CreateProduct />} />
+          <Route path='/login' element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </div>
