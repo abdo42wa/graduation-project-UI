@@ -1,11 +1,12 @@
-import { Container, Grid, Paper, TextField, Typography, Stack, Button } from '@mui/material'
+import { Grid, Paper, TextField, Typography, Button } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 function SignupPage() {
     return (
         <Grid container justifyContent='center' display='flex' my={5} >
             <Paper elevation={3} sx={{ padding: '30px' }}>
-
-                <Typography p={2} component="h1" variant="h5">Sign in</Typography>
+                <Typography p={2} variant="subtitle1">Do you have an account? <Link to='/login'>Login</Link>  </Typography>
+                <Typography p={2} component="h1" variant="h5">Create Account</Typography>
                 <TextField sx={{ m: 2 }} fullWidth label="Display Name" type='text' variant="outlined" />
                 <TextField sx={{ m: 2 }} fullWidth label="Email" type='email' variant="outlined" />
                 <TextField sx={{ m: 2 }} fullWidth label="Password" type='password' variant="outlined" />

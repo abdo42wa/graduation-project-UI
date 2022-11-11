@@ -5,7 +5,7 @@ import { Search as SearchIcon } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import NavbarLogoIcon from '../Images/NavbarLogoIcon'
+import NavbarLogoIcon from '../icons/NavbarLogoIcon'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
