@@ -7,7 +7,7 @@ export enum ProductStatus {
 }
 
 export interface Iproduct {
-    id: string,
+    _id: string,
     user: string,
     category: string,
     image: string,

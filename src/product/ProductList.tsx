@@ -1,14 +1,22 @@
 import { useCallback, useEffect } from 'react'
 import { Box, Grid } from "@mui/material"
-//import products from "../data/ProductsData"
 import { ProductCard } from "./ProductCard"
 import SideBar from "../components/SideBar";
 import HomePageHader from "../components/HomePageHader";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
+import { getProducts } from '../reducers/productSlice';
 
 export const ProductList = () => {
   const { products, isLoding } = useAppSelector(state => state.products)
+  const dispatch = useAppDispatch();
 
+  const initApp = useCallback(async () => {
+    await dispatch(getProducts())
+  }, [dispatch])
+
+  useEffect(() => {
+    initApp()
+  }, [initApp])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -26,11 +34,11 @@ export const ProductList = () => {
       </Grid>
       <Grid container spacing={4} p={10} >
         {isLoding ? (
-          <h1>Loding</h1>
+          <h1>Loding...</h1>
         ) :
 
           products.map((product) => (
-            <ProductCard id={product.id} name={product.name} image={product.image} price={product.price} key={product.id} />
+            <ProductCard _id={product._id} name={product.name} image={product.image} price={product.price} key={product._id} />
           ))
 
         }

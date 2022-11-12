@@ -3,11 +3,11 @@ import { CardMedia, CardContent, Card, Grid, Link } from '@mui/material';
 import { Iproduct } from './ProductType';
 
 
-export const ProductCard = (product: Pick<Iproduct, 'image' | 'name' | 'price' | 'id'>) => {
+export const ProductCard = (product: Pick<Iproduct, 'image' | 'name' | 'price' | '_id'>) => {
 
   return (
     <Grid item  >
-      <Link href={`/product/${product.id}`}>
+      <Link href={`/product/${product._id}`}>
 
         <Card sx={{ width: 323, height: 453, background: '#eeee', borderRadius: 7 }}>
           <CardMedia

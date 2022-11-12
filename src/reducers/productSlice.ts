@@ -30,6 +30,19 @@ export const getProducts = createAsyncThunk<Iproduct[]>(
     }
 )
 
+export const getProductByID = createAsyncThunk<Iproduct, string>(
+    "products/getProductByID",
+    async (id, thunkAPI) => {
+        try {
+            const responce = await axios.get(`http://localhost:5000/api/products/${id}`);
+            console.log(responce)
+            return responce.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
 export const createProduct = createAsyncThunk<Object, Iproduct>(
     "products/createProduct",
     async (data, thunkAPI) => {
@@ -62,6 +75,18 @@ export const productSilce = createSlice({
             state.isLoding = false;
         })
         builder.addCase(getProducts.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLoding = false;
+        })
+        // get product by ID
+        builder.addCase(getProductByID.pending, (state) => {
+            state.isLoding = true;
+        })
+        builder.addCase(getProductByID.fulfilled, (state, action) => {
+            state.singleProduct = action.payload;
+            state.isLoding = false;
+        })
+        builder.addCase(getProductByID.rejected, (state, action) => {
             state.error = action.payload;
             state.isLoding = false;
         })
