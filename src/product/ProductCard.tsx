@@ -1,14 +1,9 @@
 import Typography from '@mui/material/Typography';
 import { CardMedia, CardContent, Card, Grid, Link } from '@mui/material';
+import { Iproduct } from './ProductType';
 
-type Product = {
-  name: string;
-  price: number;
-  image: string;
-  id: number;
-  rating: number;
-}
-export const ProductCard = (product: Product) => {
+
+export const ProductCard = (product: Pick<Iproduct, 'image' | 'name' | 'price' | 'id'>) => {
 
   return (
     <Grid item  >

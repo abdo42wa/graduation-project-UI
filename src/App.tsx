@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from "react"
 import { ProductList } from './product/ProductList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Product from './product/Product';
@@ -5,8 +6,19 @@ import Navbar from './components/Navbar';
 import CreateProduct from './admin/CreateProduct';
 import LoginPage from './login/LoginPage';
 import SignupPage from './login/SignupPage';
+import { useAppDispatch } from './store';
+import { getProducts } from "./reducers/productSlice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  const initApp = useCallback(async () => {
+    await dispatch(getProducts())
+  }, [dispatch])
+
+  useEffect(() => {
+    initApp()
+  }, [])
   return (
     <div>
       <Navbar />

@@ -94,7 +94,7 @@ const Product = () => {
     const [openReviewForm, setOpenReviewForm] = useState(false);
     const [checked, setChecked] = useState(false);
     const productID = location.pathname.split('/')[2];
-    const productInfo = products.find(product => product.id === Number(productID))
+    const productInfo = products.find(product => product.id === productID)
 
     const handleClickOpen = () => {
         setOpenReviewForm(true);
