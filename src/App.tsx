@@ -4,8 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Product from './product/Product';
 import Navbar from './components/Navbar';
 import CreateProduct from './admin/CreateProduct';
-import LoginPage from './login/LoginPage';
-import SignupPage from './login/SignupPage';
+import LoginPage from './auth/LoginPage';
+import SignupPage from './auth/SignupPage';
 import { useAppDispatch } from './store';
 import { getProducts } from "./reducers/productSlice";
 
