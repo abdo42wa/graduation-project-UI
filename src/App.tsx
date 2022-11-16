@@ -1,15 +1,25 @@
 import { ProductList } from './product/ProductList';
+import { useEffect } from "react"
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Product from './product/Product';
 import Navbar from './components/Navbar';
 import CreateProduct from './admin/CreateProduct';
 import LoginPage from './auth/LoginPage';
 import SignupPage from './auth/SignupPage';
+import { getUser } from './reducers/userSlice';
+import { useAppDispatch } from './store';
+
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getUser())
+
+  }, [dispatch])
 
   return (
-    <div>
+    <>
       <Navbar />
       <BrowserRouter>
         <Routes>
@@ -20,7 +30,7 @@ function App() {
           <Route path='/signup' element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 

@@ -6,6 +6,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NavbarLogoIcon from '../icons/NavbarLogoIcon'
+import { useAppSelector } from '../store';
+
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,9 +56,10 @@ const Navbar = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
+  const { currentUsername } = useAppSelector(state => state.user)
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const loged = false;
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -93,6 +97,7 @@ const Navbar = () => {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
     </Menu>
   );
 
@@ -167,7 +172,7 @@ const Navbar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {!loged ? (
+          {!currentUsername ? (
             <><Button href='/login'>Log in</Button></>
           ) :
             <>
