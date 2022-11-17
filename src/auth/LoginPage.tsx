@@ -1,5 +1,4 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../reducers/userSlice'
@@ -12,12 +11,12 @@ const LoginPage = () => {
 
     const history = useNavigate();
     const dispatch = useAppDispatch();
-    const { user, isLoding, error } = useAppSelector(state => state.user)
+    const { currentUsername, isLoding, error } = useAppSelector(state => state.user)
     useEffect(() => {
-        if (user) {
+        if (currentUsername) {
             history('/')
         }
-    }, [history, user])
+    }, [history, currentUsername])
 
     const handelLogin = () => {
         const postObj: Iuser = {

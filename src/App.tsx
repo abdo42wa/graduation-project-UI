@@ -7,21 +7,25 @@ import CreateProduct from './admin/CreateProduct';
 import LoginPage from './auth/LoginPage';
 import SignupPage from './auth/SignupPage';
 import { getUser } from './reducers/userSlice';
-import { useAppDispatch } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 
 
 function App() {
   const dispatch = useAppDispatch();
+  const { currentUsername } = useAppSelector(state => state.user)
 
   useEffect(() => {
-    dispatch(getUser())
+    if (currentUsername) {
 
-  }, [dispatch])
+      dispatch(getUser())
+    }
+
+  }, [dispatch, currentUsername])
 
   return (
     <>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />

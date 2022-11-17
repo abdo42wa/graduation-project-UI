@@ -37,7 +37,22 @@ export const login = createAsyncThunk<any, Iuser>(
     async (data, thunkAPI) => {
         try {
             const responce = await axios.post("http://localhost:5000/api/user/login", data, ({ withCredentials: true }));
-            localStorage.setItem('userInfo', JSON.stringify(responce.data.user.name))
+            localStorage.setItem('userInfo', JSON.stringify(responce.data.user.name));
+            getUser();
+            return responce.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+// log out
+export const logOut = createAsyncThunk<Iuser>(
+    "user/logOut",
+    async (_, thunkAPI) => {
+        try {
+            const responce = await axios.get("http://localhost:5000/api/user/logout", ({ withCredentials: true }));
+            localStorage.removeItem('userInfo')
+            getUser();
             return responce.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -50,15 +65,13 @@ export const createUser = createAsyncThunk<any, Iuser>(
     "user/createUser",
     async (data, thunkAPI) => {
         try {
-            const responce = await axios.post("http://localhost:5000/api/user/signup", data);
+            const responce = await axios.post("http://localhost:5000/api/user/signup", data, ({ withCredentials: true }));
             return responce.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
     }
 )
-
-
 
 //reducers
 
@@ -73,6 +86,7 @@ export const userSilce = createSlice({
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
             state.isLoding = true;
+            state.currentUsername = currentUser;
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.user = action.payload;
@@ -93,17 +107,32 @@ export const userSilce = createSlice({
             state.error = action.payload;
             state.isLoding = false;
         })
-        // builder.addCase(getProductByID.pending, (state) => {
-        //     state.isLoding = true;
-        // })
-        // builder.addCase(getProductByID.fulfilled, (state, action) => {
-        //     state.singleProduct = action.payload;
-        //     state.isLoding = false;
-        // })
-        // builder.addCase(getProductByID.rejected, (state, action) => {
-        //     state.error = action.payload;
-        //     state.isLoding = false;
-        // })
+        builder.addCase(logOut.pending, (state) => {
+            state.isLoding = true;
+            state.currentUsername = ""
+        });
+        builder.addCase(logOut.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.user = null
+            state.isLoding = false;
+        })
+        builder.addCase(logOut.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLoding = false;
+        })
+        builder.addCase(createUser.pending, (state) => {
+            state.isLoding = true;
+        });
+        builder.addCase(createUser.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.currentUsername = currentUser;
+            state.isLoding = false;
+        })
+        builder.addCase(createUser.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLoding = false;
+        })
+
     }
 
 })
