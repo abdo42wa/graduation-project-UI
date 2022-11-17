@@ -58,7 +58,7 @@ const Navbar = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
-  const { currentUsername, user } = useAppSelector(state => state.user)
+  const { currentUsername } = useAppSelector(state => state.user)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -183,7 +183,7 @@ const Navbar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-          {!user || !currentUsername ? (
+          {!currentUsername ? (
             <><Button href='/login'>Log in</Button></>
           ) :
             <>

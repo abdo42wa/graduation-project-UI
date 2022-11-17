@@ -81,6 +81,9 @@ export const userSilce = createSlice({
     reducers: {
         setUser: (state, action: PayloadAction<Iuser>) => {
             state.user = action.payload
+        },
+        setIsAuthticated: (state, action) => {
+            state.currentUsername = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -138,4 +141,4 @@ export const userSilce = createSlice({
 })
 
 export default userSilce.reducer;
-export const { setUser } = userSilce.actions;
+export const { setUser, setIsAuthticated } = userSilce.actions;

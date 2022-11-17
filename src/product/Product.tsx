@@ -165,7 +165,7 @@ const Product = () => {
                                         />
                                         <CardContent sx={{ flex: '1 0 auto' }}>
                                             <Typography component="div" >
-                                                Saler name
+                                                {String(singleProduct?.user?.name)}
                                             </Typography>
 
                                         </CardContent>

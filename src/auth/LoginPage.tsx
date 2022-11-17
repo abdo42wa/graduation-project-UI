@@ -1,7 +1,7 @@
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../reducers/userSlice'
+import { login, setIsAuthticated } from '../reducers/userSlice'
 import { useAppDispatch, useAppSelector } from '../store'
 import { Iuser } from './UserType'
 
@@ -25,8 +25,23 @@ const LoginPage = () => {
         }
         dispatch(login(postObj))
     }
-    const getUser = async () => {
-        window.open("http://localhost:5000/auth/google", "_self")
+    const loginWithGoogle = async () => {
+        let timer: NodeJS.Timeout | null = null;
+        const googleURL = "http://localhost:5000/auth/google";
+        const newWindow = window.open(
+            googleURL,
+            "_blank",
+            "width=500,height=600");
+
+        if (newWindow) {
+            timer = setInterval(() => {
+                if (newWindow.closed) {
+                    localStorage.setItem('userInfo', currentUsername!);
+                    dispatch(setIsAuthticated('true'))
+                    if (timer) clearInterval(timer)
+                }
+            })
+        }
     }
     return (
         <Grid container justifyContent='center' display='flex' my={5} >
@@ -37,7 +52,7 @@ const LoginPage = () => {
                 <TextField sx={{ m: 2 }} fullWidth label="Email" required value={email} type='email' variant="outlined" onChange={(e) => setEmail(e.target.value)} />
                 <TextField sx={{ m: 2 }} fullWidth label="Password" type='password' value={password} variant="outlined" onChange={(e) => setPassword(e.target.value)} />
                 <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={handelLogin}>Login</Button>
-                <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={getUser}>Login</Button>
+                <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={loginWithGoogle}>Login</Button>
             </Paper>
             {isLoding && <h1>Loding....</h1>}
         </Grid>

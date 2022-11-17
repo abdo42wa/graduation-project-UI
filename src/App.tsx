@@ -8,6 +8,7 @@ import LoginPage from './auth/LoginPage';
 import SignupPage from './auth/SignupPage';
 import { getUser } from './reducers/userSlice';
 import { useAppDispatch, useAppSelector } from './store';
+import LoginSuccsess from './components/LoginSuccsess';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path='/succsess' element={<LoginSuccsess />} />
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />
           <Route path='/create/product' element={<CreateProduct />} />
