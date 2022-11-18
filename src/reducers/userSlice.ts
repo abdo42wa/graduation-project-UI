@@ -32,7 +32,7 @@ export const getUser = createAsyncThunk<Iuser>(
 )
 
 // log in
-export const login = createAsyncThunk<any, Iuser>(
+export const login = createAsyncThunk<Iuser, Iuser>(
     "user/login",
     async (data, thunkAPI) => {
         try {
@@ -52,7 +52,6 @@ export const logOut = createAsyncThunk<Iuser>(
         try {
             const responce = await axios.get("http://localhost:5000/api/user/logout", ({ withCredentials: true }));
             localStorage.removeItem('userInfo')
-            getUser();
             return responce.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -89,10 +88,10 @@ export const userSilce = createSlice({
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
             state.isLoding = true;
-            state.currentUsername = currentUser;
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.user = action.payload;
+            state.currentUsername = currentUser;
             state.isLoding = false;
         })
         builder.addCase(login.rejected, (state, action) => {

@@ -1,8 +1,6 @@
--- create a middel ware to chack if the user authantecated 
--- create a middel ware to chack if the user is seelar 
--- create a middel ware to chack if the user is admin 
+ create a middel ware to chack if the user authantecated 
+ create a middel ware to chack if the user is seelar 
+ create a middel ware to chack if the user is admin 
 
 1- create add product component
 2- create a sealer dashbord 
-3- make usre that google logIn function work as expected.
-4- think on how the registed user will be trated

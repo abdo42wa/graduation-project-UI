@@ -165,6 +165,7 @@ const Navbar = () => {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            href="/"
           >
             <NavbarLogoIcon isActive />
           </IconButton>

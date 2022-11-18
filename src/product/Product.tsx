@@ -1,113 +1,39 @@
-import { Button, CardContent, Divider, Grid, Rating, TextField, Typography, Card, CardMedia, Dialog, DialogTitle, Checkbox } from "@mui/material"
+import { Button, CardContent, Divider, Grid, Rating, Typography, Card, CardMedia, Checkbox } from "@mui/material"
 import { useLocation } from 'react-router-dom';
 import { ShoppingCart, FavoriteBorder, Favorite } from '@mui/icons-material';
 import { Box, Stack } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getProductByID } from "../reducers/productSlice"
-
-
-type Review = {
-    author: string;
-    body: string;
-    date: string;
-    rating: string
-}
-
-type ProductReviews = {
-    open: boolean;
-    onClose: (value: boolean) => void;
-}
-
-const ReviewFoem = (props: ProductReviews) => {
-    const [ratingValue, setRatingValue] = useState<number | null>(null);
-    const [review, setReview] = useState<string>("");
-    const [, setReviews] = useState<Review[]>(fakeReviews);
-    const { onClose, open } = props;
-
-    const handleClose = () => {
-        onClose(false);
-    };
-
-    const handelRating = (e: React.ChangeEvent<{}>, newValue: number | null) => {
-        setRatingValue(newValue);
-    }
-    const handelchange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setReview(e.target.value);
-    }
-    const addReview = () => {
-
-        setReviews(prevReview => [
-            ...prevReview,
-            { author: "Abdo Lukas", body: review, date: "2022-11-15", rating: "5" }
-        ])
-    }
-
-    return (
-        <>
-            <Dialog onClose={handleClose} open={open}>
-                <Box sx={{ background: "white", p: 3, borderRadius: 3 }}>
-                    <DialogTitle>Leave a Review</DialogTitle>
-                    <Box>
-                        <Stack spacing={3} direction='row'>
-                            <Typography p={2} variant="subtitle1" component="span" >Rate the product :</Typography>
-                            <Rating sx={{ p: 2, mt: 0.2 }} precision={0.5} value={ratingValue} onChange={handelRating} />
-                        </Stack>
-                    </Box>
-
-                    <Box>
-                        <Stack spacing={3} direction='row'>
-                            <Typography p={2} variant="subtitle1" component="span" >Leave a review :</Typography>
-                            <TextField id="standard-basic" label="review" variant="standard" value={review} onChange={handelchange} />
-                        </Stack>
-                        <Button sx={{ mt: 1, p: 1 }} variant="contained" size="large" fullWidth onClick={addReview}>Submit </Button>
-                    </Box>
-                </Box>
-            </Dialog>
-
-        </>
-    )
-}
-
-const fakeReviews = [
-    {
-        author: "Abdo Ahmed",
-        body: "this is bad product",
-        rating: "5",
-        date: "2022-11-05"
-    },
-    {
-        author: "Lukas Song",
-        body: "fake review",
-        rating: " 4.5",
-        date: "2022-11-25"
-    },
-    {
-        author: "Pavlo Pidluzny",
-        body: "this is fake good product",
-        rating: "3.5",
-        date: "2022-11-15"
-    }
-]
+import { getAllReviewsWithProductID, getAvaregeRatingByProductId } from "../reducers/reviewSlice";
+import ReviewForm from './ReviewForm'
+import { toast } from "react-toastify";
 
 const Product = () => {
     const location = useLocation();
-    const [reviews,] = useState<Review[]>(fakeReviews);
     const [openReviewForm, setOpenReviewForm] = useState(false);
     const [checked, setChecked] = useState(false);
 
     const { singleProduct, isLoding } = useAppSelector(state => state.products)
+    const { reviews, averageRating } = useAppSelector(state => state.reviews)
+    const { currentUsername } = useAppSelector(state => state.user)
     const dispatch = useAppDispatch();
 
     const productID = location.pathname.split('/')[2];
 
     useEffect(() => {
         dispatch(getProductByID(productID))
+        dispatch(getAllReviewsWithProductID(productID))
+        dispatch(getAvaregeRatingByProductId(productID))
         //react-hooks/exhaustive-deps
     }, [productID, dispatch])
 
 
     const handleClickOpen = () => {
+        if (!currentUsername) {
+
+            toast.warning('Please Login first')
+        }
         setOpenReviewForm(true);
     };
     const handleClose = () => {
@@ -141,7 +67,7 @@ const Product = () => {
                             <Stack spacing={3}>
                                 {/* <Typography variant="body2" >{productInfo?.category}</Typography> */}
                                 <Box display="flex" justifyContent='start' pt={2}>
-                                    <Rating name="read-only" precision={0.5} value={!singleProduct?.rating ? 0 : singleProduct?.rating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{singleProduct?.rating}</Typography>
+                                    <Rating name="read-only" precision={0.5} value={!averageRating ? 0 : averageRating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{averageRating}</Typography>
                                 </Box>
                                 <Typography fontWeight={500} >{singleProduct?.description}</Typography>
 
@@ -177,7 +103,7 @@ const Product = () => {
                         <Box sx={{ mt: 5, background: "white", p: 3, borderRadius: 3 }}>
                             <Box sx={{ background: "rgba(34, 34, 34, 0.04)", borderRadius: 3, p: 3 }} display="flex" flexDirection="row" justifyContent="space-between">
                                 <Typography variant='h5'>Price: {singleProduct?.price} $</Typography>
-                                <Button variant="contained" size="large" sx={{ borderRadius: 4, bgcolor: "#00CD66" }} endIcon={<ShoppingCart />}>Add to card</Button>
+                                <Button disabled={singleProduct?.countInStock! >= 0 ? true : false} variant="contained" size="large" sx={{ borderRadius: 4, bgcolor: "#00CD66" }} endIcon={<ShoppingCart />}>Add to card</Button>
                             </Box>
                         </Box>
                         {/* reviews part */}
@@ -185,22 +111,21 @@ const Product = () => {
                             <Box display="flex" justifyContent="space-between">
                                 <Typography variant='h6' fontWeight="bold" p={2}>Reviews</Typography>
                                 <Button variant="outlined" sx={{ borderRadius: 2 }} onClick={handleClickOpen}>Write a review</Button>
-                                <ReviewFoem open={openReviewForm} onClose={handleClose} />
+                                {openReviewForm && <ReviewForm open={openReviewForm} onClose={handleClose} productID={productID} />}
                             </Box>
                             <Box>
                                 {reviews.map((review) => {
                                     return (
-                                        <>
-                                            <Box >
-                                                <Box display="flex" justifyContent='start' pt={2}>
-                                                    <Typography component="span" sx={{ mx: 2 }}>{review?.author}</Typography> |
-                                                    <Rating name="read-only" precision={0.5} value={4} readOnly sx={{ mx: 2 }} />
-                                                </Box>
-                                                <Typography p={2} variant="subtitle1" component="span" >{review.body}</Typography>
-                                                <Typography ml={2} color='gray' variant="subtitle2" component="p" >{review.date}</Typography>
+                                        <Box key={review._id}>
+                                            <Box display="flex" justifyContent='start' pt={2} >
+                                                <Typography component="span" sx={{ mx: 2 }}>{review?.user?.name}</Typography> |
+                                                <Rating name="read-only" precision={0.5} value={review.rating} readOnly sx={{ mx: 2 }} />
                                             </Box>
+                                            <Typography p={2} variant="subtitle1" component="span" >{review.comment}</Typography>
+                                            <Typography ml={2} color='gray' variant="subtitle2" component="p" >{String(review.createdAt).slice(0, 10)}</Typography>
                                             <Divider sx={{ p: 1 }} />
-                                        </>
+                                        </Box>
+
                                     )
                                 })}
                             </Box>

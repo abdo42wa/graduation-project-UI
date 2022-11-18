@@ -9,6 +9,9 @@ import SignupPage from './auth/SignupPage';
 import { getUser } from './reducers/userSlice';
 import { useAppDispatch, useAppSelector } from './store';
 import LoginSuccsess from './components/LoginSuccsess';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function App() {
@@ -25,6 +28,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <BrowserRouter>
         <Navbar />
         <Routes>

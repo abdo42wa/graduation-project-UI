@@ -2,15 +2,13 @@ import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import productSilce from "./reducers/productSlice"
 import userSilce from "./reducers/userSlice"
-
-// const userInfoFromStorage = localStorage.getItem('userInfo')
-//     ? JSON.parse(localStorage?.getItem('userInfo')) : null
-
+import reviewsrSilce from "./reducers/reviewSlice"
 
 const store = configureStore({
     reducer: {
         products: productSilce,
-        user: userSilce
+        user: userSilce,
+        reviews: reviewsrSilce
     }
 })
 
