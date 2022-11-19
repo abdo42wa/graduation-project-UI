@@ -1,9 +1,15 @@
 import { Button, Card, CardContent, CardMedia, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { ArrowForwardIosOutlined } from '@mui/icons-material'
+import { getUser } from "../reducers/userSlice";
+import { useAppDispatch } from "../store";
 const logo = require("../Images/Image.png");
 
 const HomePageHader = () => {
+    const dispatch = useAppDispatch();
+    const test = () => {
+        dispatch(getUser())
+    }
     return (
         <>
             <Card sx={{ display: 'flex' }}>
@@ -18,7 +24,7 @@ const HomePageHader = () => {
                                     We offer an easy prepaid subscription for your phone and fast, prepaid mobile Internet.
                                     Top up conveniently online and with the mobile application.</Typography>
                             </Typography>
-                            <Button sx={{ color: "white", bgcolor: "#D32F2F", mt: 4, p: 2, width: ["100%", "90%", "80%", "70%", "35%"] }} endIcon={<ArrowForwardIosOutlined sx={{ ml: 5 }} />} >Start Now</Button>
+                            <Button onClick={test} sx={{ color: "white", bgcolor: "#D32F2F", mt: 4, p: 2, width: ["100%", "90%", "80%", "70%", "35%"] }} endIcon={<ArrowForwardIosOutlined sx={{ ml: 5 }} />} >Start Now</Button>
                         </Box>
                     </CardContent>
                 </Box>

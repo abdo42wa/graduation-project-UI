@@ -24,6 +24,7 @@ export const getUser = createAsyncThunk<Iuser>(
     async (_, thunkAPI) => {
         try {
             const responce = await axios.get("http://localhost:5000/api/user/userinfo", ({ withCredentials: true }));
+            console.log(responce.data)
             return responce.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)

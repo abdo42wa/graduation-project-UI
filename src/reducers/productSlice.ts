@@ -42,11 +42,11 @@ export const getProductByID = createAsyncThunk<Iproduct, string>(
     }
 )
 
-export const createProduct = createAsyncThunk<Object, Iproduct>(
+export const createProduct = createAsyncThunk<Iproduct, Iproduct>(
     "products/createProduct",
     async (data, thunkAPI) => {
         try {
-            const responce = await axios.post("http://localhost:5000/api/products/create", data);
+            const responce = await axios.post("http://localhost:5000/api/products/create", data, ({ withCredentials: true }));
             thunkAPI.dispatch(getProducts())
             return responce.data;
         } catch (error) {
@@ -86,6 +86,18 @@ export const productSilce = createSlice({
             state.isLoding = false;
         })
         builder.addCase(getProductByID.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLoding = false;
+        })
+        // create product 
+        builder.addCase(createProduct.pending, (state) => {
+            state.isLoding = true;
+        })
+        builder.addCase(createProduct.fulfilled, (state, action) => {
+            state.singleProduct = action.payload;
+            state.isLoding = false;
+        })
+        builder.addCase(createProduct.rejected, (state, action) => {
             state.error = action.payload;
             state.isLoding = false;
         })
