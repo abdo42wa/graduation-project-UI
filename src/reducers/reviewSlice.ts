@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
+import { toast } from "react-toastify";
 import { IReview } from "../interfaces/Ireview";
 
 interface ProductState {
@@ -51,6 +52,8 @@ export const createProductReview = createAsyncThunk<IReview, IReview>(
         const { _id } = data
         try {
             const responce = await axios.post(`http://localhost:5000/api/review/${_id}`, data, ({ withCredentials: true }));
+            thunkAPI.dispatch(getAvaregeRatingByProductId(_id!))
+            thunkAPI.dispatch(getAllReviewsWithProductID(_id!))
             console.log({ res: responce.data })
             return responce.data;
         } catch (error) {
@@ -102,6 +105,7 @@ export const reviewSilce = createSlice({
         })
         builder.addCase(createProductReview.fulfilled, (state, action) => {
             state.singleReview = action.payload;
+            toast("Thanks for the review")
             state.isLoding = false;
         })
         builder.addCase(createProductReview.rejected, (state, action) => {

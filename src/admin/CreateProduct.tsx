@@ -3,6 +3,7 @@ import { Box, Stack } from "@mui/system"
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 import { Iproduct, ProductStatus } from "../product/ProductType"
+import { getCategories } from "../reducers/categorySlice"
 import { createProduct } from "../reducers/productSlice"
 import { useAppDispatch, useAppSelector } from "../store"
 
@@ -23,14 +24,17 @@ const CreateProduct = () => {
 
     const dispatch = useAppDispatch();
     const history = useNavigate()
-    const { user } = useAppSelector(state => state.user)
+    // const { user } = useAppSelector(state => state.user)
+    const { categories } = useAppSelector(state => state.category)
 
     useEffect(() => {
-        if (user?.isAdmin == false) {
+        //     if (user?.isAdmin == false) {
 
-            history('/')
-        }
-    }, [user])
+        //         history('/')
+        //     }
+
+        dispatch(getCategories())
+    }, [dispatch])
 
 
 
@@ -74,7 +78,7 @@ const CreateProduct = () => {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={status}
-                                label="Age"
+                                label="Status"
                                 onChange={handleChange}
                             >
                                 <MenuItem value={ProductStatus.NEW}>New</MenuItem>
@@ -84,12 +88,12 @@ const CreateProduct = () => {
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <InputLabel id="demo-simple-select-label">Publishe it?</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={isPublished}
-                                label="Age"
+                                label="Publishe it?"
                                 onChange={(e) => setIsPublished(Boolean(e.target.value))}
                             >
                                 <MenuItem value={'true'}>Yes</MenuItem>
@@ -103,22 +107,37 @@ const CreateProduct = () => {
                         }} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Category" name='category' type='text' value={category} variant="outlined" onChange={(e) => setCategory(e.target.value)} />
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label"> Category</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={category}
+                                label="Category"
+                                onChange={(e) => setCategory(e.target.value)}
+                            >
+                                {categories.map((category) => {
+                                    return (
+                                        <MenuItem key={category._id} value={category._id}>{category.title}</MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Image Link" name='image' type='text' value={image} variant="outlined" onChange={(e) => setImage(e.target.value)} />
+                        <TextField fullWidth label="Image Link" type='text' value={image} variant="outlined" onChange={(e) => setImage(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Brand" name='brand' type='text' variant="outlined" value={brand} onChange={(e) => setBrand(e.target.value)} />
+                        <TextField fullWidth label="Brand" type='text' variant="outlined" value={brand} onChange={(e) => setBrand(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth minRows={3} label="discription" variant="outlined" multiline name='description' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Discaunt" name='discaunt' type='text' value={discaunt} variant="outlined" onChange={(e) => setDiscaunt(Number(e.target.value))} />
+                        <TextField fullWidth label="Discaunt" type='text' value={discaunt} variant="outlined" onChange={(e) => setDiscaunt(Number(e.target.value))} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Count In Stock" name='countInStock' type='text' variant="outlined" value={countInStock} onChange={(e) => setCountInStock(Number(e.target.value))} />
+                        <TextField fullWidth label="Count In Stock" type='text' variant="outlined" value={countInStock} onChange={(e) => setCountInStock(Number(e.target.value))} />
                     </Stack>
                     <Button fullWidth variant="contained" onClick={handelSubmit}>Create</Button>
                 </Box>

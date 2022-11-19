@@ -103,7 +103,7 @@ const Product = () => {
                         <Box sx={{ mt: 5, background: "white", p: 3, borderRadius: 3 }}>
                             <Box sx={{ background: "rgba(34, 34, 34, 0.04)", borderRadius: 3, p: 3 }} display="flex" flexDirection="row" justifyContent="space-between">
                                 <Typography variant='h5'>Price: {singleProduct?.price} $</Typography>
-                                <Button disabled={singleProduct?.countInStock! >= 0 ? true : false} variant="contained" size="large" sx={{ borderRadius: 4, bgcolor: "#00CD66" }} endIcon={<ShoppingCart />}>Add to card</Button>
+                                <Button disabled={singleProduct?.countInStock! == 0 ? true : false} variant="contained" size="large" sx={{ borderRadius: 4, bgcolor: "#00CD66" }} endIcon={<ShoppingCart />}>Add to card</Button>
                             </Box>
                         </Box>
                         {/* reviews part */}

@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from './store';
 import LoginSuccsess from './components/LoginSuccsess';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminDaxhborde from './admin/AdminDaxhborde';
+import CreateCategory from './admin/CreateCategory';
 
 
 
@@ -36,8 +38,10 @@ function App() {
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />
           <Route path='/create/product' element={<CreateProduct />} />
+          <Route path='/create/category' element={<CreateCategory />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
+          <Route path='/admin' element={<AdminDaxhborde />} />
         </Routes>
       </BrowserRouter>
     </>
