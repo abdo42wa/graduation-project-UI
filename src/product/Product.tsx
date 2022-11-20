@@ -67,7 +67,7 @@ const Product = () => {
                             <Stack spacing={3}>
                                 {/* <Typography variant="body2" >{productInfo?.category}</Typography> */}
                                 <Box display="flex" justifyContent='start' pt={2}>
-                                    <Rating name="read-only" precision={0.5} value={!averageRating ? 0 : averageRating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{averageRating}</Typography>
+                                    <Rating name="read-only" precision={0.5} value={!averageRating ? 0 : averageRating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{averageRating.toFixed(1)}</Typography>
                                 </Box>
                                 <Typography fontWeight={500} >{singleProduct?.description}</Typography>
 

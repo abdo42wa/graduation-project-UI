@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Iuser } from "../auth/UserType";
 
 const currentUser = localStorage.getItem("userInfo");
@@ -73,6 +74,20 @@ export const createUser = createAsyncThunk<any, Iuser>(
     }
 )
 
+// update User
+
+export const updateUserProfile = createAsyncThunk<any, Iuser>(
+    "user/update",
+    async (data, thunkAPI) => {
+        try {
+            const responce = await axios.put("http://localhost:5000/api/user/profile", data, ({ withCredentials: true }));
+            return responce.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
 //reducers
 
 export const userSilce = createSlice({
@@ -132,6 +147,19 @@ export const userSilce = createSlice({
             state.isLoding = false;
         })
         builder.addCase(createUser.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLoding = false;
+        })
+
+        builder.addCase(updateUserProfile.pending, (state) => {
+            state.isLoding = true;
+        });
+        builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+            state.user = action.payload;
+            toast.success("You have update you name successfuly")
+            state.isLoding = false;
+        })
+        builder.addCase(updateUserProfile.rejected, (state, action) => {
             state.error = action.payload;
             state.isLoding = false;
         })

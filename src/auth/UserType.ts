@@ -5,7 +5,7 @@ export enum UserTypes {
 
 export interface Iuser {
     _id?: string,
-    email: string,
+    email?: string,
     type?: UserTypes,
     isAdmin?: boolean,
     name?: string,

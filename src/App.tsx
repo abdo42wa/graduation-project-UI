@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDaxhborde from './admin/AdminDaxhborde';
 import CreateCategory from './admin/CreateCategory';
+import ProfilePage from './pages/ProfilePage';
 
 
 
@@ -42,6 +43,7 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
           <Route path='/admin' element={<AdminDaxhborde />} />
+          <Route path='/profile' element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </>

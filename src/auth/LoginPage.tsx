@@ -1,3 +1,4 @@
+import { Google } from '@mui/icons-material'
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -52,7 +53,7 @@ const LoginPage = () => {
                 <TextField sx={{ m: 2 }} fullWidth label="Email" required value={email} type='email' variant="outlined" onChange={(e) => setEmail(e.target.value)} />
                 <TextField sx={{ m: 2 }} fullWidth label="Password" type='password' value={password} variant="outlined" onChange={(e) => setPassword(e.target.value)} />
                 <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={handelLogin}>Login</Button>
-                <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={loginWithGoogle}>Login</Button>
+                <Button startIcon={<Google />} sx={{ m: 2 }} color="error" fullWidth variant='contained' onClick={loginWithGoogle}>Google</Button>
             </Paper>
             {isLoding && <h1>Loding....</h1>}
         </Grid>
