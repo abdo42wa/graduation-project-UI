@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled, alpha, AppBar, Box, Toolbar, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
@@ -55,10 +55,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [cartCount, setCartCount] = useState(0);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
   const { currentUsername } = useAppSelector(state => state.user)
+  const { cart } = useAppSelector(state => state.cart)
+
+
+  useEffect(() => {
+    const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
+    setCartCount(() => totalQty);
+  }, [cart])
+
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -135,7 +144,7 @@ const Navbar = () => {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={cartCount} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -190,7 +199,7 @@ const Navbar = () => {
                   aria-label="show 17 new notifications"
                   color="inherit"
                 >
-                  <Badge badgeContent={17} color="error">
+                  <Badge badgeContent={cartCount} color="error">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>

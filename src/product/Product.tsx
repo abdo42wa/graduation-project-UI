@@ -1,6 +1,6 @@
-import { Button, CardContent, Divider, Grid, Rating, Typography, Card, CardMedia, Checkbox } from "@mui/material"
+import { Button, CardContent, Divider, Grid, Rating, Typography, Card, CardMedia, Checkbox, IconButton } from "@mui/material"
 import { useLocation } from 'react-router-dom';
-import { ShoppingCart, FavoriteBorder, Favorite } from '@mui/icons-material';
+import { ShoppingCart, FavoriteBorder, Favorite, Add, Remove } from '@mui/icons-material';
 import { Box, Stack } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
@@ -8,6 +8,7 @@ import { getProductByID } from "../reducers/productSlice"
 import { getAllReviewsWithProductID, getAvaregeRatingByProductId } from "../reducers/reviewSlice";
 import ReviewForm from './ReviewForm'
 import { toast } from "react-toastify";
+import { decrementProduct, incrementProduct } from "../reducers/cartSlice";
 
 const Product = () => {
     const location = useLocation();
@@ -17,10 +18,13 @@ const Product = () => {
     const { singleProduct, isLoding } = useAppSelector(state => state.products)
     const { reviews, averageRating } = useAppSelector(state => state.reviews)
     const { currentUsername } = useAppSelector(state => state.user)
+    const { cart } = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch();
+
 
     const productID = location.pathname.split('/')[2];
 
+    const productAmoutInCart = cart.find((x) => x._id === productID);
     useEffect(() => {
         dispatch(getProductByID(productID))
         dispatch(getAllReviewsWithProductID(productID))
@@ -38,6 +42,16 @@ const Product = () => {
     };
     const handleClose = () => {
         setOpenReviewForm(false);
+    };
+    const handleAddToCartbyOne = () => {
+        dispatch(incrementProduct(singleProduct!))
+    };
+    const handleAddTo = () => {
+        if (!productAmoutInCart?.quantity)
+            dispatch(incrementProduct(singleProduct!))
+    };
+    const handleRemoveFromCartByone = () => {
+        dispatch(decrementProduct(singleProduct!))
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
@@ -67,7 +81,7 @@ const Product = () => {
                             <Stack spacing={3}>
                                 {/* <Typography variant="body2" >{productInfo?.category}</Typography> */}
                                 <Box display="flex" justifyContent='start' pt={2}>
-                                    <Rating name="read-only" precision={0.5} value={!averageRating ? 0 : averageRating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{averageRating.toFixed(1)}</Typography>
+                                    <Rating name="read-only" precision={0.5} value={!averageRating ? 0 : averageRating} readOnly /> <Typography component="span" sx={{ ml: 2 }}>{averageRating?.toFixed(1)}</Typography>
                                 </Box>
                                 <Typography fontWeight={500} >{singleProduct?.description}</Typography>
 
@@ -103,7 +117,26 @@ const Product = () => {
                         <Box sx={{ mt: 5, background: "white", p: 3, borderRadius: 3 }}>
                             <Box sx={{ background: "rgba(34, 34, 34, 0.04)", borderRadius: 3, p: 3 }} display="flex" flexDirection="row" justifyContent="space-between">
                                 <Typography variant='h5'>Price: {singleProduct?.price} $</Typography>
-                                <Button disabled={singleProduct?.countInStock! == 0 ? true : false} variant="contained" size="large" sx={{ borderRadius: 4, bgcolor: "#00CD66" }} endIcon={<ShoppingCart />}>Add to card</Button>
+                                <Button onClick={handleAddTo} disabled={singleProduct?.countInStock! == 0 ? true : false}
+                                    variant="contained" size="large" sx={{
+                                        borderRadius: 4, bgcolor: "#00CD66", ":hover": {
+                                            backgroundColor: '#fff',
+                                            color: '#3c52b2',
+                                        },
+                                    }} endIcon={<ShoppingCart />}>
+                                    {productAmoutInCart ? (
+                                        <>
+                                            {/* worning because the Icon Button is in side a button */}
+                                            <IconButton onClick={handleRemoveFromCartByone} >
+                                                <Remove />
+                                            </IconButton>
+                                            {productAmoutInCart.quantity}
+                                            <IconButton disabled={productAmoutInCart.quantity >= singleProduct?.countInStock!} onClick={handleAddToCartbyOne} >
+                                                <Add />
+                                            </IconButton>
+                                        </>
+                                    ) : 'Add to card'}
+                                </Button>
                             </Box>
                         </Box>
                         {/* reviews part */}

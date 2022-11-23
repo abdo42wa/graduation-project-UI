@@ -4,14 +4,20 @@ import productSilce from "./reducers/productSlice"
 import userSilce from "./reducers/userSlice"
 import reviewsrSilce from "./reducers/reviewSlice"
 import categorySilce from "./reducers/categorySlice"
+import cartSlice from "./reducers/cartSlice"
 
 const store = configureStore({
     reducer: {
         products: productSilce,
         user: userSilce,
         reviews: reviewsrSilce,
-        category: categorySilce
-    }
+        category: categorySilce,
+        cart: cartSlice
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })
 
 
