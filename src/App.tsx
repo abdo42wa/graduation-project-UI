@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminDaxhborde from './admin/AdminDaxhborde';
 import CreateCategory from './admin/CreateCategory';
 import ProfilePage from './pages/ProfilePage';
+import CartPage from './pages/CartPage';
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route path='/signup' element={<SignupPage />} />
           <Route path='/admin' element={<AdminDaxhborde />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/cart' element={<CartPage />} />
         </Routes>
       </BrowserRouter>
     </>

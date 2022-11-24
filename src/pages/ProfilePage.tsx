@@ -3,7 +3,7 @@ import { Button, Card, CardActions, CardContent, Divider, Grid, TextField, Typog
 import { Box, Stack } from '@mui/system'
 import { useAppDispatch, useAppSelector } from '../store'
 import { updateUserProfile } from '../reducers/userSlice'
-import { Iuser } from '../auth/UserType'
+import { IUser } from '../auth/UserType'
 
 const ProfilePage = () => {
     const [isForm, setIsForm] = useState(false)
@@ -12,7 +12,7 @@ const ProfilePage = () => {
     const dispatch = useAppDispatch();
     const handelSave = () => {
 
-        const postObj: Iuser = {
+        const postObj: IUser = {
             name
         }
 

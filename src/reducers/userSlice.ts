@@ -1,32 +1,32 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Iuser } from "../auth/UserType";
+import { IUser } from "../auth/UserType";
 
 const currentUser = localStorage.getItem("userInfo");
 interface UserState {
-    user: Iuser | null;
-    isLoding: boolean;
+    user: IUser | null;
+    isLodging: boolean;
     error: any;
     currentUsername: string | null;
 }
 
 const initialState: UserState = {
     user: null,
-    isLoding: false,
+    isLodging: false,
     error: null,
     currentUsername: currentUser ? currentUser : null
 
 }
 
 //action
-export const getUser = createAsyncThunk<Iuser>(
+export const getUser = createAsyncThunk<IUser>(
     "user/getuserInfo",
     async (_, thunkAPI) => {
         try {
-            const responce = await axios.get("http://localhost:5000/api/user/userinfo", ({ withCredentials: true }));
-            console.log(responce.data)
-            return responce.data;
+            const response = await axios.get("http://localhost:5000/api/user/userinfo", ({ withCredentials: true }));
+            console.log(response.data)
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -34,21 +34,21 @@ export const getUser = createAsyncThunk<Iuser>(
 )
 
 // log in
-export const login = createAsyncThunk<Iuser, Iuser>(
+export const login = createAsyncThunk<IUser, IUser>(
     "user/login",
     async (data, thunkAPI) => {
         try {
-            const responce = await axios.post("http://localhost:5000/api/user/login", data, ({ withCredentials: true }));
-            localStorage.setItem('userInfo', JSON.stringify(responce.data.user.name));
+            const response = await axios.post("http://localhost:5000/api/user/login", data, ({ withCredentials: true }));
+            localStorage.setItem('userInfo', JSON.stringify(response.data.user.name));
             getUser();
-            return responce.data;
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
     }
 )
 // log out
-export const logOut = createAsyncThunk<Iuser>(
+export const logOut = createAsyncThunk<IUser>(
     "user/logOut",
     async (_, thunkAPI) => {
         try {
@@ -61,8 +61,8 @@ export const logOut = createAsyncThunk<Iuser>(
     }
 )
 
-// sigun up
-export const createUser = createAsyncThunk<any, Iuser>(
+// sign up
+export const createUser = createAsyncThunk<any, IUser>(
     "user/createUser",
     async (data, thunkAPI) => {
         try {
@@ -76,7 +76,7 @@ export const createUser = createAsyncThunk<any, Iuser>(
 
 // update User
 
-export const updateUserProfile = createAsyncThunk<any, Iuser>(
+export const updateUserProfile = createAsyncThunk<any, IUser>(
     "user/update",
     async (data, thunkAPI) => {
         try {
@@ -94,7 +94,7 @@ export const userSilce = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<Iuser>) => {
+        setUser: (state, action: PayloadAction<IUser>) => {
             state.user = action.payload
         },
         setIsAuthticated: (state, action) => {
@@ -103,65 +103,65 @@ export const userSilce = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(login.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         });
         builder.addCase(login.fulfilled, (state, action) => {
             state.user = action.payload;
             state.currentUsername = currentUser;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(login.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(getUser.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         });
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.user = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(getUser.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(logOut.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
             state.currentUsername = ""
         });
         builder.addCase(logOut.fulfilled, (state, action) => {
             state.user = action.payload;
             state.user = null
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(logOut.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(createUser.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         });
         builder.addCase(createUser.fulfilled, (state, action) => {
             state.user = action.payload;
             state.currentUsername = currentUser;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(createUser.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
 
         builder.addCase(updateUserProfile.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         });
         builder.addCase(updateUserProfile.fulfilled, (state, action) => {
             state.user = action.payload;
             toast.success("You have update you name successfuly")
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(updateUserProfile.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
 
     }

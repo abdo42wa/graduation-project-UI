@@ -1,9 +1,10 @@
 import Typography from '@mui/material/Typography';
 import { CardMedia, CardContent, Card, Grid, Link } from '@mui/material';
-import { Iproduct } from './ProductType';
+import { IProduct } from './ProductType';
+import { formatCurrency } from '../utils/formatCurrency';
 
 
-export const ProductCard = (product: Pick<Iproduct, 'image' | 'name' | 'price' | '_id'>) => {
+export const ProductCard = (product: Pick<IProduct, 'image' | 'name' | 'price' | '_id'>) => {
 
   return (
     <Grid item  >
@@ -20,7 +21,7 @@ export const ProductCard = (product: Pick<Iproduct, 'image' | 'name' | 'price' |
             <Typography variant="h5" color="text.secondary">
               {product.name}
             </Typography>
-            <Typography variant="subtitle1" >{product.price} $</Typography>
+            <Typography variant="subtitle1" >{formatCurrency(product.price!)} </Typography>
           </CardContent>
         </Card>
       </Link>

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { styled, alpha, AppBar, Box, Toolbar, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@mui/material';
 import { IconButton } from '@mui/material';
-import { Search as SearchIcon } from '@mui/icons-material';
+import { Search as SearchIcon, ShoppingCart } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NavbarLogoIcon from '../icons/NavbarLogoIcon'
 import { useAppDispatch, useAppSelector } from '../store';
@@ -141,11 +140,11 @@ const Navbar = () => {
       <MenuItem>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
           color="inherit"
+          href='/cart'
         >
           <Badge badgeContent={cartCount} color="error">
-            <NotificationsIcon />
+            <ShoppingCart />
           </Badge>
         </IconButton>
         <p>Notifications</p>
@@ -196,11 +195,11 @@ const Navbar = () => {
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <IconButton
                   size="large"
-                  aria-label="show 17 new notifications"
                   color="inherit"
+                  href='/cart'
                 >
                   <Badge badgeContent={cartCount} color="error">
-                    <NotificationsIcon />
+                    <ShoppingCart />
                   </Badge>
                 </IconButton>
                 <IconButton

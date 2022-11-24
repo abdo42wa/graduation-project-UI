@@ -2,7 +2,7 @@ import { Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Paper,
 import { Box, Stack } from "@mui/system"
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
-import { Iproduct, ProductStatus } from "../product/ProductType"
+import { IProduct, ProductStatus } from "../product/ProductType"
 import { getCategories } from "../reducers/categorySlice"
 import { createProduct } from "../reducers/productSlice"
 import { useAppDispatch, useAppSelector } from "../store"
@@ -16,7 +16,7 @@ const CreateProduct = () => {
     const [category, setCategory] = useState('')
     const [image, setImage] = useState('')
     const [brand, setBrand] = useState('')
-    const [discaunt, setDiscaunt] = useState(0)
+    const [discount, setDiscount] = useState(0)
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState(0)
     const [countInStock, setCountInStock] = useState(0)
@@ -48,12 +48,12 @@ const CreateProduct = () => {
     };
 
     const handelSubmit = () => {
-        const postObj: Iproduct = {
+        const postObj: IProduct = {
             name,
             category,
             image,
             brand,
-            discaunt,
+            discount,
             description,
             price,
             status,
@@ -134,7 +134,7 @@ const CreateProduct = () => {
                         <TextField fullWidth minRows={3} label="discription" variant="outlined" multiline name='description' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Discaunt" type='text' value={discaunt} variant="outlined" onChange={(e) => setDiscaunt(Number(e.target.value))} />
+                        <TextField fullWidth label="Discaunt" type='text' value={discount} variant="outlined" onChange={(e) => setDiscount(Number(e.target.value))} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth label="Count In Stock" type='text' variant="outlined" value={countInStock} onChange={(e) => setCountInStock(Number(e.target.value))} />

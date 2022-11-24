@@ -1,17 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
-import productSilce from "./reducers/productSlice"
-import userSilce from "./reducers/userSlice"
-import reviewsrSilce from "./reducers/reviewSlice"
-import categorySilce from "./reducers/categorySlice"
+import productSlice from "./reducers/productSlice"
+import userSlice from "./reducers/userSlice"
+import reviewsSlice from "./reducers/reviewSlice"
+import categorySlice from "./reducers/categorySlice"
 import cartSlice from "./reducers/cartSlice"
 
 const store = configureStore({
     reducer: {
-        products: productSilce,
-        user: userSilce,
-        reviews: reviewsrSilce,
-        category: categorySilce,
+        products: productSlice,
+        user: userSlice,
+        reviews: reviewsSlice,
+        category: categorySlice,
         cart: cartSlice
     },
     middleware: (getDefaultMiddleware) =>

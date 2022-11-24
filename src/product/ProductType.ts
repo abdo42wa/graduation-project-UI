@@ -10,7 +10,7 @@ export enum ProductStatus {
     USED = 'USD',
 }
 
-export interface Iproduct {
+export interface IProduct {
     _id?: string,
     user?: { name: string, _id: string },
     category?: string,
@@ -18,11 +18,11 @@ export interface Iproduct {
     name?: string,
     brand?: string,
     description?: string,
-    modirationStatus?: ModerationStatus,
+    moderationStatus?: ModerationStatus,
     numReviews?: number,
     price?: number,
     status?: ProductStatus,
     isPublished?: boolean,
     countInStock?: number,
-    discaunt?: number,
+    discount?: number,
 }

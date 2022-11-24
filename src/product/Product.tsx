@@ -5,17 +5,18 @@ import { Box, Stack } from "@mui/system";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getProductByID } from "../reducers/productSlice"
-import { getAllReviewsWithProductID, getAvaregeRatingByProductId } from "../reducers/reviewSlice";
+import { getAllReviewsWithProductID, getAverageRatingByProductId } from "../reducers/reviewSlice";
 import ReviewForm from './ReviewForm'
 import { toast } from "react-toastify";
 import { decrementProduct, incrementProduct } from "../reducers/cartSlice";
+import { formatCurrency } from "../utils/formatCurrency";
 
 const Product = () => {
     const location = useLocation();
     const [openReviewForm, setOpenReviewForm] = useState(false);
     const [checked, setChecked] = useState(false);
 
-    const { singleProduct, isLoding } = useAppSelector(state => state.products)
+    const { singleProduct, isLodging } = useAppSelector(state => state.products)
     const { reviews, averageRating } = useAppSelector(state => state.reviews)
     const { currentUsername } = useAppSelector(state => state.user)
     const { cart } = useAppSelector(state => state.cart)
@@ -24,11 +25,11 @@ const Product = () => {
 
     const productID = location.pathname.split('/')[2];
 
-    const productAmoutInCart = cart.find((x) => x._id === productID);
+    const productAmountInCart = cart.find((x) => x._id === productID);
     useEffect(() => {
         dispatch(getProductByID(productID))
         dispatch(getAllReviewsWithProductID(productID))
-        dispatch(getAvaregeRatingByProductId(productID))
+        dispatch(getAverageRatingByProductId(productID))
         //react-hooks/exhaustive-deps
     }, [productID, dispatch])
 
@@ -43,14 +44,14 @@ const Product = () => {
     const handleClose = () => {
         setOpenReviewForm(false);
     };
-    const handleAddToCartbyOne = () => {
+    const handleAddToCartByOne = () => {
         dispatch(incrementProduct(singleProduct!))
     };
     const handleAddTo = () => {
-        if (!productAmoutInCart?.quantity)
+        if (!productAmountInCart?.quantity)
             dispatch(incrementProduct(singleProduct!))
     };
-    const handleRemoveFromCartByone = () => {
+    const handleRemoveFromCartByOne = () => {
         dispatch(decrementProduct(singleProduct!))
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +61,8 @@ const Product = () => {
     return (
 
         <Grid container display="flex" justifyContent='center' mt={5}>
-            {isLoding ? (
-                <h1>Loding.....</h1>
+            {isLodging ? (
+                <h1>Lodging.....</h1>
             ) :
                 <>
                     <Grid item lg={4}>
@@ -116,27 +117,28 @@ const Product = () => {
                         {/* Add to card part */}
                         <Box sx={{ mt: 5, background: "white", p: 3, borderRadius: 3 }}>
                             <Box sx={{ background: "rgba(34, 34, 34, 0.04)", borderRadius: 3, p: 3 }} display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant='h5'>Price: {singleProduct?.price} $</Typography>
-                                <Button onClick={handleAddTo} disabled={singleProduct?.countInStock! == 0 ? true : false}
-                                    variant="contained" size="large" sx={{
-                                        borderRadius: 4, bgcolor: "#00CD66", ":hover": {
-                                            backgroundColor: '#fff',
-                                            color: '#3c52b2',
-                                        },
-                                    }} endIcon={<ShoppingCart />}>
-                                    {productAmoutInCart ? (
-                                        <>
-                                            {/* worning because the Icon Button is in side a button */}
-                                            <IconButton onClick={handleRemoveFromCartByone} >
-                                                <Remove />
-                                            </IconButton>
-                                            {productAmoutInCart.quantity}
-                                            <IconButton disabled={productAmoutInCart.quantity >= singleProduct?.countInStock!} onClick={handleAddToCartbyOne} >
-                                                <Add />
-                                            </IconButton>
-                                        </>
-                                    ) : 'Add to card'}
-                                </Button>
+                                <Typography variant='h5'>Price: {formatCurrency(singleProduct?.price!)}</Typography>
+                                {!productAmountInCart ? (
+                                    <Button onClick={handleAddTo} disabled={singleProduct?.countInStock! === 0 ? true : false}
+                                        variant="contained" size="large" sx={{
+                                            borderRadius: 4, bgcolor: "#00CD66"
+                                        }} endIcon={<ShoppingCart />}>
+                                        Add to card
+                                    </Button>
+                                ) : (
+                                    <Box bgcolor="#00CD66" borderRadius="25px" alignItems='center' width='40%' display='flex' justifyContent="space-between">
+                                        <IconButton onClick={handleRemoveFromCartByOne} >
+                                            <Remove />
+                                        </IconButton>
+                                        {productAmountInCart.quantity}
+                                        <IconButton disabled={productAmountInCart.quantity >= singleProduct?.countInStock!} onClick={handleAddToCartByOne} >
+                                            <Add />
+                                        </IconButton>
+                                    </Box>
+                                )
+
+                                }
+
                             </Box>
                         </Box>
                         {/* reviews part */}

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login, setIsAuthticated } from '../reducers/userSlice'
 import { useAppDispatch, useAppSelector } from '../store'
-import { Iuser } from './UserType'
+import { IUser } from './UserType'
 
 const LoginPage = () => {
     const [email, setEmail] = useState("")
@@ -12,7 +12,7 @@ const LoginPage = () => {
 
     const history = useNavigate();
     const dispatch = useAppDispatch();
-    const { currentUsername, isLoding, error } = useAppSelector(state => state.user)
+    const { currentUsername, isLodging: isLoding, error } = useAppSelector(state => state.user)
     useEffect(() => {
         if (currentUsername) {
             history('/')
@@ -20,7 +20,7 @@ const LoginPage = () => {
     }, [history, currentUsername])
 
     const handelLogin = () => {
-        const postObj: Iuser = {
+        const postObj: IUser = {
             email,
             password
         }

@@ -5,7 +5,7 @@ import { IReview } from "../interfaces/Ireview";
 
 interface ProductState {
     reviews: IReview[];
-    isLoding: boolean;
+    isLodging: boolean;
     singleReview: IReview | null
     averageRating: number
     error: any;
@@ -13,7 +13,7 @@ interface ProductState {
 
 const initialState: ProductState = {
     reviews: [],
-    isLoding: false,
+    isLodging: false,
     singleReview: null,
     averageRating: 0,
     error: null,
@@ -25,20 +25,20 @@ export const getAllReviewsWithProductID = createAsyncThunk<IReview[], string>(
     "reviews/getreviewByID",
     async (id, thunkAPI) => {
         try {
-            const responce = await axios.get(`http://localhost:5000/api/review/${id}`);
-            return responce.data;
+            const response = await axios.get(`http://localhost:5000/api/review/${id}`);
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
     }
 )
 
-export const getAvaregeRatingByProductId = createAsyncThunk<number, string>(
+export const getAverageRatingByProductId = createAsyncThunk<number, string>(
     "reviews/getAverage",
     async (id, thunkAPI) => {
         try {
-            const responce = await axios.get(`http://localhost:5000/api/review/avr/${id}`);
-            return responce.data[0];
+            const response = await axios.get(`http://localhost:5000/api/review/avr/${id}`);
+            return response.data[0];
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -51,11 +51,11 @@ export const createProductReview = createAsyncThunk<IReview, IReview>(
     async (data, thunkAPI) => {
         const { _id } = data
         try {
-            const responce = await axios.post(`http://localhost:5000/api/review/${_id}`, data, ({ withCredentials: true }));
-            thunkAPI.dispatch(getAvaregeRatingByProductId(_id!))
+            const response = await axios.post(`http://localhost:5000/api/review/${_id}`, data, ({ withCredentials: true }));
+            thunkAPI.dispatch(getAverageRatingByProductId(_id!))
             thunkAPI.dispatch(getAllReviewsWithProductID(_id!))
-            console.log({ res: responce.data })
-            return responce.data;
+            console.log({ res: response.data })
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -64,7 +64,7 @@ export const createProductReview = createAsyncThunk<IReview, IReview>(
 
 //reducers
 
-export const reviewSilce = createSlice({
+export const reviewSlice = createSlice({
     name: "reviews",
     initialState,
     reducers: {
@@ -75,46 +75,46 @@ export const reviewSilce = createSlice({
     extraReducers: (builder) => {
         // get all reviews by product ID
         builder.addCase(getAllReviewsWithProductID.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         })
         builder.addCase(getAllReviewsWithProductID.fulfilled, (state, action) => {
             state.reviews = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(getAllReviewsWithProductID.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
         // get average rating
-        builder.addCase(getAvaregeRatingByProductId.pending, (state) => {
-            state.isLoding = true;
+        builder.addCase(getAverageRatingByProductId.pending, (state) => {
+            state.isLodging = true;
         })
-        builder.addCase(getAvaregeRatingByProductId.fulfilled, (state, action) => {
+        builder.addCase(getAverageRatingByProductId.fulfilled, (state, action) => {
             state.averageRating = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
-        builder.addCase(getAvaregeRatingByProductId.rejected, (state, action) => {
+        builder.addCase(getAverageRatingByProductId.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
 
         // create review
 
         builder.addCase(createProductReview.pending, (state) => {
-            state.isLoding = true;
+            state.isLodging = true;
         })
         builder.addCase(createProductReview.fulfilled, (state, action) => {
             state.singleReview = action.payload;
             toast("Thanks for the review")
-            state.isLoding = false;
+            state.isLodging = false;
         })
         builder.addCase(createProductReview.rejected, (state, action) => {
             state.error = action.payload;
-            state.isLoding = false;
+            state.isLodging = false;
         })
     }
 
 })
 
-export default reviewSilce.reducer;
-export const { setReviews } = reviewSilce.actions;
+export default reviewSlice.reducer;
+export const { setReviews } = reviewSlice.actions;

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Cart } from '../interfaces/ICart';
-import { Iproduct } from '../product/ProductType';
+import { IProduct } from '../product/ProductType';
 
 
 interface CartState {
     cart: Cart;
-    isLoding: boolean;
+    isLodging: boolean;
     error: any;
     cartTotalAmount: number;
 
@@ -13,8 +13,8 @@ interface CartState {
 
 const initialState: CartState = {
     // @ts-ignore
-    cart: localStorage.getItem('fake') ? JSON.parse(localStorage.getItem('fake')) : [],
-    isLoding: false,
+    cart: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
+    isLodging: false,
     cartTotalAmount: 0,
     error: null,
 }
@@ -23,7 +23,7 @@ const initialState: CartState = {
 
 const modifyQtyByOne = (
     cart: Cart,
-    selectedProduct: Iproduct,
+    selectedProduct: IProduct,
     modificationType: 'INCREMENT' | 'DECREMENT'
 ) => {
     const previousCart = [...cart];
@@ -48,11 +48,12 @@ const modifyQtyByOne = (
 
         if (productInCart.quantity === 0) {
             newCart = [...filteredCart];
+            console.log({ newCart })
         } else {
             newCart = [...filteredCart, productInCart];
         }
+        localStorage.setItem('cartItems', JSON.stringify(newCart));
     }
-    localStorage.setItem('cartItems', JSON.stringify(cart));
     return newCart;
 };
 
@@ -62,7 +63,7 @@ const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        incrementProduct: (state, action: PayloadAction<Iproduct>) => {
+        incrementProduct: (state, action: PayloadAction<IProduct>) => {
             const modifiedCart = modifyQtyByOne(
                 state.cart,
                 action.payload,
@@ -70,7 +71,7 @@ const cartSlice = createSlice({
             );
             state.cart = modifiedCart;
         },
-        decrementProduct: (state, action: PayloadAction<Iproduct>) => {
+        decrementProduct: (state, action: PayloadAction<IProduct>) => {
             const modifiedCart = modifyQtyByOne(
                 state.cart,
                 action.payload,

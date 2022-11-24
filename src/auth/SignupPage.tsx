@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createUser } from '../reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../store';
-import { Iuser } from './UserType';
+import { IUser } from './UserType';
 
 function SignupPage() {
 
@@ -23,7 +23,7 @@ function SignupPage() {
 
 
     const handelLogin = () => {
-        const postObj: Iuser = {
+        const postObj: IUser = {
             name,
             email,
             password

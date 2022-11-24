@@ -1,6 +1,3 @@
- create a middel ware to chack if the user authantecated 
- create a middel ware to chack if the user is seelar 
- create a middel ware to chack if the user is admin 
-
-1- create add product component
-2- create a sealer dashbord 
+1- Create profile page.
+2- display user information.
+3- edit usre information

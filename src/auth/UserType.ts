@@ -3,7 +3,7 @@ export enum UserTypes {
     BUYER = 'BUYER',
 }
 
-export interface Iuser {
+export interface IUser {
     _id?: string,
     email?: string,
     type?: UserTypes,
