@@ -1,24 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Card, CardActions, CardContent, Divider, Grid, TextField, Typography } from '@mui/material'
 import { Box, Stack } from '@mui/system'
 import { useAppDispatch, useAppSelector } from '../store'
 import { updateUserProfile } from '../reducers/userSlice'
 import { IUser } from '../auth/UserType'
+import { getUserAddress } from '../reducers/shippingAddressSlice'
+import ShippingAddress from '../components/ShippingAddress'
 
 const ProfilePage = () => {
     const [isForm, setIsForm] = useState(false)
     const [name, setName] = useState('')
     const { user } = useAppSelector(state => state.user)
+    const { shippingAddress } = useAppSelector(state => state.shipping)
     const dispatch = useAppDispatch();
-    const handelSave = () => {
 
+    useEffect(() => {
+        dispatch(getUserAddress())
+    }, [dispatch])
+    const handelSave = () => {
         const postObj: IUser = {
             name
         }
-
-
         dispatch(updateUserProfile(postObj))
     }
+
 
     return (
         <Grid container display="flex" justifyContent="center" pt={8} spacing={6}>
@@ -72,7 +77,57 @@ const ProfilePage = () => {
             </Grid>
 
             <Grid item md={4}>
-                Personal info
+                <Card sx={{ minWidth: 275 }}>
+                    <CardContent>
+                        <Typography variant='h5' component='h1'>
+                            Address information
+                        </Typography>
+
+                        <Box display="flex" justifyContent="space-between" mt={3} mb={3}>
+                            {!isForm ? (
+                                <>
+                                    {!shippingAddress?.address ? (
+                                        <>
+                                            <Typography>No date</Typography>
+                                            <Button onClick={(e) => setIsForm(true)}>Add</Button>
+                                        </>
+                                    ) : (
+                                        <Box>
+                                            <Box>
+                                                <Typography sx={{ mb: 1.5 }} color="text.secondary"> Address</Typography>
+                                                <Typography>{shippingAddress?.address}</Typography>
+                                            </Box>
+                                            <Box>
+                                                <Typography sx={{ mb: 1.5 }} color="text.secondary"> City</Typography>
+                                                <Typography>{shippingAddress?.city}</Typography>
+                                            </Box>
+                                            <Box>
+                                                <Typography sx={{ mb: 1.5 }} color="text.secondary"> Postal Code</Typography>
+                                                <Typography>{shippingAddress?.postalCode}</Typography>
+                                            </Box>
+                                            <Box>
+                                                <Typography sx={{ mb: 1.5 }} color="text.secondary"> Country</Typography>
+                                                <Typography>{shippingAddress?.country}</Typography>
+                                            </Box>
+
+
+                                            <Button size="small" onClick={(e) => setIsForm(true)}>Edit</Button>
+
+                                        </Box>
+                                    )}
+                                </>
+                            ) : (
+                                <Box>
+                                    <ShippingAddress onClose={() => setIsForm(false)} />
+                                </Box>
+                            )}
+                        </Box>
+                        <Divider />
+                    </CardContent>
+                    <CardActions>
+
+                    </CardActions>
+                </Card>
 
             </Grid>
         </Grid >

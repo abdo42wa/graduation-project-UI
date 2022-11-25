@@ -5,6 +5,7 @@ import userSlice from "./reducers/userSlice"
 import reviewsSlice from "./reducers/reviewSlice"
 import categorySlice from "./reducers/categorySlice"
 import cartSlice from "./reducers/cartSlice"
+import shippingAddressSlice from "./reducers/shippingAddressSlice"
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         user: userSlice,
         reviews: reviewsSlice,
         category: categorySlice,
-        cart: cartSlice
+        cart: cartSlice,
+        shipping: shippingAddressSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
