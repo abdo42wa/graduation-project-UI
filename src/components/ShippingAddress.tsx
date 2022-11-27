@@ -7,7 +7,9 @@ import { useAppDispatch } from '../store';
 
 
 type ShippingAddressProps = {
-    onClose: (value: boolean) => void;
+    onClose?: (value: boolean) => void;
+    firesButtonLabel: string;
+    isCanceledActive: boolean;
 }
 
 const ShippingAddress = (props: ShippingAddressProps) => {
@@ -15,7 +17,6 @@ const ShippingAddress = (props: ShippingAddressProps) => {
     const [postalCode, setPostalCode] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
-    const { onClose } = props;
     const dispatch = useAppDispatch();
     const addShippingAddress = () => {
         const postObj: IShippingAddress = {
@@ -28,9 +29,6 @@ const ShippingAddress = (props: ShippingAddressProps) => {
         dispatch(addUserAddress(postObj))
     }
 
-    const handleClose = () => {
-        onClose(false);
-    };
     return (
         <>
             <Stack spacing={2}>
@@ -39,8 +37,11 @@ const ShippingAddress = (props: ShippingAddressProps) => {
                 <TextField value={city} required label="City" onChange={(e) => setCity(e.target.value)} />
                 <TextField value={country} required label="Country" onChange={(e) => setCountry(e.target.value)} />
             </Stack>
-            <Button onClick={addShippingAddress}>Add</Button>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={addShippingAddress}>{props.firesButtonLabel}</Button>
+            {
+                props.isCanceledActive &&
+                <Button onClick={() => props.onClose?.(false)}>Cancel</Button>
+            }
         </>
 
 

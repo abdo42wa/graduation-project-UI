@@ -15,6 +15,7 @@ import AdminDaxhborde from './admin/AdminDaxhborde';
 import CreateCategory from './admin/CreateCategory';
 import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
+import CheckOutPage from './pages/CheckOutPage';
 
 
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/succsess' element={<LoginSuccsess />} />
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />
+          <Route path='/checkout' element={<CheckOutPage />} />
           <Route path='/create/product' element={<CreateProduct />} />
           <Route path='/create/category' element={<CreateCategory />} />
           <Route path='/login' element={<LoginPage />} />

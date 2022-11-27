@@ -28,7 +28,7 @@ const ProfilePage = () => {
     return (
         <Grid container display="flex" justifyContent="center" pt={8} spacing={6}>
             <Grid item md={12}>
-                <Typography textAlign="center" variant='h3' component='h1'>Welcom {user?.name}</Typography>
+                <Typography textAlign="center" variant='h3' component='h1'>Welcome {user?.name}</Typography>
             </Grid>
 
             <Grid item md={5}>
@@ -118,7 +118,7 @@ const ProfilePage = () => {
                                 </>
                             ) : (
                                 <Box>
-                                    <ShippingAddress onClose={() => setIsForm(false)} />
+                                    <ShippingAddress isCanceledActive={true} onClose={() => setIsForm(false)} firesButtonLabel="Add" />
                                 </Box>
                             )}
                         </Box>

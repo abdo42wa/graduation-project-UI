@@ -20,7 +20,7 @@ export const ProductList = () => {
   }, [initApp])
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', flexGrow: '1' }}>
       <Grid container spacing={4} p={10} >
         <Grid item lg={4} >
           <Box>
