@@ -92,7 +92,7 @@ const CartPage = () => {
                                 Total :    {formatCurrency(totalPrice)}
                             </Typography>
                             <Divider />
-                            <Button sx={{ mt: 5 }} fullWidth variant="contained">Check out</Button>
+                            <Button sx={{ mt: 5 }} href="/checkout" fullWidth variant="contained">Check out</Button>
                         </CardContent>
                     </Card>
                 </Paper>

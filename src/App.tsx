@@ -16,6 +16,8 @@ import CreateCategory from './admin/CreateCategory';
 import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
 import CheckOutPage from './pages/CheckOutPage';
+import CheckOutSuccess from './components/CheckOutSuccess';
+import CheckOutCancel from './components/CheckOutCancel';
 
 
 
@@ -37,7 +39,9 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/succsess' element={<LoginSuccsess />} />
+          <Route path='/success' element={<LoginSuccsess />} />
+          <Route path='/success/checkout' element={<CheckOutSuccess />} />
+          <Route path='/cancel/checkout' element={<CheckOutCancel />} />
           <Route path='/' element={<ProductList />} />
           <Route path='/Product/:id' element={<Product />} />
           <Route path='/checkout' element={<CheckOutPage />} />

@@ -9,7 +9,7 @@ const LoginSuccsess = () => {
     }, [])
     return (
         <Box sx={{ textAlign: "center", alignItems: "center" }}>
-            <h2>YOU HAVE SUCCSESSFULY LOED IN!</h2>
+            <h2>YOU HAVE SUCCESSFULLY LOGGED IN!</h2>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <CheckCircle color='success' sx={{ fontSize: "100px" }} />
             </Box>
