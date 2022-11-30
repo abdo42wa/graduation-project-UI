@@ -1,23 +1,27 @@
 import { Button, TextField } from '@mui/material'
+import { useEffect } from "react"
 import { Stack } from '@mui/system'
-import { useState } from 'react'
 import { IShippingAddress } from '../interfaces/IShippingAddress';
-import { addUserAddress } from '../reducers/shippingAddressSlice';
-import { useAppDispatch } from '../store';
+import { addUserAddress, getUserAddress } from '../reducers/shippingAddressSlice';
+import { useAppDispatch, useAppSelector } from '../store';
 
 
 type ShippingAddressProps = {
     onClose?: (value: boolean) => void;
-    firesButtonLabel: string;
     isCanceledActive: boolean;
+    updateFields: (fields: IShippingAddress) => void;
+    address?: string;
+    postalCode?: string;
+    city?: string;
+    country?: string;
 }
 
-const ShippingAddress = (props: ShippingAddressProps) => {
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
-    const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
+
+const ShippingAddress = ({ onClose, isCanceledActive, updateFields, address, city, country, postalCode }: ShippingAddressProps) => {
+
     const dispatch = useAppDispatch();
+    const { shippingAddress } = useAppSelector((state) => state.shipping);
+
     const addShippingAddress = () => {
         const postObj: IShippingAddress = {
             address,
@@ -29,18 +33,22 @@ const ShippingAddress = (props: ShippingAddressProps) => {
         dispatch(addUserAddress(postObj))
     }
 
+    useEffect(() => {
+        dispatch(getUserAddress());
+    }, [dispatch])
+
     return (
         <>
             <Stack spacing={2}>
-                <TextField value={address} required label="Address" onChange={(e) => setAddress(e.target.value)} />
-                <TextField value={postalCode} required label="Postal Code" onChange={(e) => setPostalCode(e.target.value)} />
-                <TextField value={city} required label="City" onChange={(e) => setCity(e.target.value)} />
-                <TextField value={country} required label="Country" onChange={(e) => setCountry(e.target.value)} />
+                <TextField value={address} required label="Address" onChange={(e) => updateFields({ address: e.target.value })} />
+                <TextField value={postalCode} required label="Postal Code" onChange={(e) => updateFields({ postalCode: e.target.value })} />
+                <TextField value={city} required label="City" onChange={(e) => updateFields({ city: e.target.value })} />
+                <TextField value={country} required label="Country" onChange={(e) => updateFields({ country: e.target.value })} />
             </Stack>
-            <Button onClick={addShippingAddress}>{props.firesButtonLabel}</Button>
+            <Button onClick={addShippingAddress}>Save</Button>
             {
-                props.isCanceledActive &&
-                <Button onClick={() => props.onClose?.(false)}>Cancel</Button>
+                isCanceledActive &&
+                <Button onClick={() => onClose?.(false)}>Cancel</Button>
             }
         </>
 

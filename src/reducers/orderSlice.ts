@@ -22,7 +22,7 @@ const initialState: ProductState = {
 
 
 export const createPaymentSession = createAsyncThunk<any, any>(
-    "reviews/create",
+    "payment/create",
     async (data, thunkAPI) => {
         const { email } = data
         try {
@@ -32,6 +32,21 @@ export const createPaymentSession = createAsyncThunk<any, any>(
                 window.location.href = response.data.url
             }
             return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const createOrder = createAsyncThunk<IOrder, IOrder>(
+    "order/create",
+    async (data, thunkAPI) => {
+        try {
+
+            const response = await axios.post("http://localhost:5000/api/order", data, ({ withCredentials: true }));
+            return response.data;
+
+
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -50,8 +65,6 @@ export const orderSlice = createSlice({
     },
     extraReducers: (builder) => {
 
-        // create review
-
         builder.addCase(createPaymentSession.pending, (state) => {
             state.isLodging = true;
         })
@@ -60,6 +73,18 @@ export const orderSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(createPaymentSession.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        builder.addCase(createOrder.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(createOrder.fulfilled, (state, action) => {
+            state.order = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(createOrder.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

@@ -6,17 +6,40 @@ import { updateUserProfile } from '../reducers/userSlice'
 import { IUser } from '../auth/UserType'
 import { getUserAddress } from '../reducers/shippingAddressSlice'
 import ShippingAddress from '../components/ShippingAddress'
+import { IShippingAddress } from '../interfaces/IShippingAddress'
+
+
 
 const ProfilePage = () => {
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(getUserAddress())
+    }, [dispatch])
+
+
     const [isForm, setIsForm] = useState(false)
     const [name, setName] = useState('')
     const { user } = useAppSelector(state => state.user)
     const { shippingAddress } = useAppSelector(state => state.shipping)
-    const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(getUserAddress())
-    }, [dispatch])
+    const initialData: IShippingAddress = {
+        address: shippingAddress?.address || "",
+        postalCode: shippingAddress?.postalCode || "",
+        city: shippingAddress?.city || "",
+        country: shippingAddress?.country || "",
+    }
+
+    const [address, setAddress] = useState(initialData)
+
+    const updateFields = (fields: Partial<IShippingAddress>) => {
+        setAddress(prev => {
+            return { ...prev, ...fields }
+        })
+    }
+
+
+
+
     const handelSave = () => {
         const postObj: IUser = {
             name
@@ -118,7 +141,7 @@ const ProfilePage = () => {
                                 </>
                             ) : (
                                 <Box>
-                                    <ShippingAddress isCanceledActive={true} onClose={() => setIsForm(false)} firesButtonLabel="Add" />
+                                    <ShippingAddress {...address} updateFields={updateFields} isCanceledActive={true} onClose={() => setIsForm(false)} />
                                 </Box>
                             )}
                         </Box>

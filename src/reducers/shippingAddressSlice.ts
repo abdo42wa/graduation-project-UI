@@ -21,7 +21,7 @@ export const getUserAddress = createAsyncThunk<IShippingAddress>(
     "shippingAddress/get",
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get('http://localhost:5000/api/shippingAddress', ({ withCredentials: true }));
+            const response = await axios.get('http://localhost:5000/api/address', ({ withCredentials: true }));
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -34,7 +34,7 @@ export const addUserAddress = createAsyncThunk<IShippingAddress, IShippingAddres
     "shippingAddress/create",
     async (data, thunkAPI) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/shippingAddress', data, ({ withCredentials: true }));
+            const response = await axios.post('http://localhost:5000/api/address', data, ({ withCredentials: true }));
             thunkAPI.dispatch(getUserAddress())
             console.log({ res: response.data })
             return response.data;
