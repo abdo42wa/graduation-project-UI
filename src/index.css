@@ -2,3 +2,9 @@ body {
     background-color: #e9e5e5;
     margin: 0;
 }
+
+.react-tel-input .form-control {
+    background-color: transparent;
+    height: 53px;
+    width: 100%;
+}

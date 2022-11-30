@@ -18,6 +18,7 @@ import CartPage from './pages/CartPage';
 import CheckOutPage from './pages/CheckOutPage';
 import CheckOutSuccess from './components/CheckOutSuccess';
 import CheckOutCancel from './components/CheckOutCancel';
+import SellerShop from './pages/SellerShop';
 
 
 
@@ -52,6 +53,7 @@ function App() {
           <Route path='/admin' element={<AdminDaxhborde />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/cart' element={<CartPage />} />
+          <Route path='/shop' element={<SellerShop />} />
         </Routes>
       </BrowserRouter>
     </>

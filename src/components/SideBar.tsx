@@ -1,27 +1,41 @@
-import { ChevronRight, ExpandMore } from '@mui/icons-material'
-import { TreeItem, TreeView } from '@mui/lab'
-import { Paper } from '@mui/material'
+import { Checkroom, ElectricBolt, Handshake } from '@mui/icons-material'
+import { List, ListItemText, Paper, ListSubheader, ListItemButton, ListItemIcon } from '@mui/material'
+import { useAppDispatch, useAppSelector } from '../store';
+import { useEffect } from "react"
+import { getCategories } from '../reducers/categorySlice';
 
 const SideBar = () => {
+    const dispatch = useAppDispatch();
+    const { categories } = useAppSelector((state) => state.category);
+
+    useEffect(() => {
+        dispatch(getCategories())
+    }, [])
+
+    const icons = [<Handshake />, <Checkroom />, <ElectricBolt />]
+
     return (
         <Paper elevation={3} >
-            <TreeView
-                aria-label="multi-select"
-                defaultCollapseIcon={<ExpandMore sx={{}} />}
-                defaultExpandIcon={<ChevronRight />}
-                multiSelect
-                sx={{ height: 216, flexGrow: 1, maxWidth: 400 }}
+            <List
+                sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                component="nav"
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Categories
+                    </ListSubheader>
+                }
             >
-                <TreeItem nodeId="1" label="Applications">
-                    <TreeItem nodeId="2" label="Calendar" />
-                    <TreeItem nodeId="3" label="Chrome" />
-                    <TreeItem nodeId="4" label="Webstorm" />
-                </TreeItem>
-                <TreeItem nodeId="5" label="Documents">
-                    <TreeItem nodeId="8" label="index.js" />
-                    <TreeItem nodeId="9" label="tree-view.js" />
-                </TreeItem>
-            </TreeView>
+                {categories.map((category, index) =>
+                (
+                    <ListItemButton key={category._id}>
+                        <ListItemIcon>
+                            {icons[index]}
+                        </ListItemIcon>
+                        <ListItemText primary={category.title} />
+                    </ListItemButton>
+                )
+                )}
+            </List>
         </Paper>
     )
 }

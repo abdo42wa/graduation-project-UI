@@ -24,14 +24,14 @@ const CreateProduct = () => {
 
     const dispatch = useAppDispatch();
     const history = useNavigate()
-    // const { user } = useAppSelector(state => state.user)
+    const { user } = useAppSelector(state => state.user)
     const { categories } = useAppSelector(state => state.category)
 
     useEffect(() => {
-        //     if (user?.isAdmin == false) {
+        if (user?.isAdmin == false) {
 
-        //         history('/')
-        //     }
+            history('/')
+        }
 
         dispatch(getCategories())
     }, [dispatch])
