@@ -3,7 +3,6 @@ import { Box } from '@mui/system'
 import { useState, useEffect } from 'react'
 import { IOrder } from '../interfaces/IOrder';
 import { IShippingAddress } from '../interfaces/IShippingAddress';
-import { resetCart } from '../reducers/cartSlice';
 import { createOrder, createPaymentSession } from '../reducers/orderSlice';
 import { getUserAddress } from '../reducers/shippingAddressSlice';
 import { useAppDispatch, useAppSelector } from '../store';

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
+import { toast } from "react-toastify";
 import { IProduct } from "../product/ProductType";
 
 interface ProductState {
@@ -35,6 +36,18 @@ export const getProductByID = createAsyncThunk<IProduct, string>(
     async (id, thunkAPI) => {
         try {
             const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const getAllUserProducts = createAsyncThunk<IProduct[]>(
+    "products/getAllUserProducts",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/products/own', ({ withCredentials: true }));
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -89,12 +102,25 @@ export const productSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+        // get all user products
+        builder.addCase(getAllUserProducts.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getAllUserProducts.fulfilled, (state, action) => {
+            state.products = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllUserProducts.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         // create product 
         builder.addCase(createProduct.pending, (state) => {
             state.isLodging = true;
         })
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.singleProduct = action.payload;
+            toast.success("You have created the product successfully")
             state.isLodging = false;
         })
         builder.addCase(createProduct.rejected, (state, action) => {

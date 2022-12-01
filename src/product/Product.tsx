@@ -117,7 +117,7 @@ const Product = () => {
                         {/* Add to card part */}
                         <Box sx={{ mt: 5, background: "white", p: 3, borderRadius: 3 }}>
                             <Box sx={{ background: "rgba(34, 34, 34, 0.04)", borderRadius: 3, p: 3 }} display="flex" flexDirection="row" justifyContent="space-between">
-                                <Typography variant='h5'>Price: {formatCurrency(singleProduct?.price!)}</Typography>
+                                <Typography variant='h5'>Price: {formatCurrency(Number(singleProduct?.price!))}</Typography>
                                 {!productAmountInCart ? (
                                     <Button onClick={handleAddTo} disabled={singleProduct?.countInStock! === 0 ? true : false}
                                         variant="contained" size="large" sx={{

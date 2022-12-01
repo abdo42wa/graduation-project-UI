@@ -4,7 +4,7 @@ import React from 'react'
 
 const Spinner = () => {
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: '40%' }}>
             <CircularProgress />
         </Box>
     )

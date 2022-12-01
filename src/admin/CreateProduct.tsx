@@ -28,20 +28,12 @@ const CreateProduct = () => {
     const { categories } = useAppSelector(state => state.category)
 
     useEffect(() => {
-        if (user?.isAdmin == false) {
-
+        if (user && !user?.isAdmin && user?.type !== "SELLER") {
             history('/')
         }
 
         dispatch(getCategories())
-    }, [dispatch])
-
-
-
-
-
-
-
+    }, [dispatch, user?.type, user?.isAdmin, history])
 
     const handleChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value as ProductStatus);
@@ -62,6 +54,7 @@ const CreateProduct = () => {
         }
         console.log({ postObj })
         dispatch(createProduct(postObj))
+
     }
     return (
         <Grid container justifyContent="center" display='flex' mt={5}>
@@ -88,12 +81,12 @@ const CreateProduct = () => {
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Publishe it?</InputLabel>
+                            <InputLabel id="demo-simple-select-label">Published it?</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={isPublished}
-                                label="Publishe it?"
+                                label="Published it?"
                                 onChange={(e) => setIsPublished(Boolean(e.target.value))}
                             >
                                 <MenuItem value={'true'}>Yes</MenuItem>
@@ -131,10 +124,10 @@ const CreateProduct = () => {
                         <TextField fullWidth label="Brand" type='text' variant="outlined" value={brand} onChange={(e) => setBrand(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth minRows={3} label="discription" variant="outlined" multiline name='description' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <TextField fullWidth minRows={3} label="Description" variant="outlined" multiline name='description' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Discaunt" type='text' value={discount} variant="outlined" onChange={(e) => setDiscount(Number(e.target.value))} />
+                        <TextField fullWidth label="Discount" type='text' value={discount} variant="outlined" onChange={(e) => setDiscount(Number(e.target.value))} />
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth label="Count In Stock" type='text' variant="outlined" value={countInStock} onChange={(e) => setCountInStock(Number(e.target.value))} />

@@ -10,7 +10,7 @@ const SideBar = () => {
 
     useEffect(() => {
         dispatch(getCategories())
-    }, [])
+    }, [dispatch])
 
     const icons = [<Handshake />, <Checkroom />, <ElectricBolt />]
 

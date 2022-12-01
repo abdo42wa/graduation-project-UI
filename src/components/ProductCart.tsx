@@ -29,7 +29,7 @@ const ProductCart = () => {
                                 </Box>
                                 <>
                                     <Typography variant='subtitle2' fontSize="18px" component='span' mr={4}>
-                                        {formatCurrency(item.price!) + ` x ${item.quantity}`}
+                                        {formatCurrency(Number(item.price!)) + ` x ${item.quantity}`}
                                     </Typography>
 
                                 </>

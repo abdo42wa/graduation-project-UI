@@ -52,9 +52,9 @@ export const logOut = createAsyncThunk<IUser>(
     "user/logOut",
     async (_, thunkAPI) => {
         try {
-            const responce = await axios.get("http://localhost:5000/api/user/logout", ({ withCredentials: true }));
+            const response = await axios.get("http://localhost:5000/api/user/logout", ({ withCredentials: true }));
             localStorage.removeItem('userInfo')
-            return responce.data;
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }

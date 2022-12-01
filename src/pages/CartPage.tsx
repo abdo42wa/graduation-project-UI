@@ -59,7 +59,7 @@ const CartPage = () => {
                                         </Box>
                                         <>
                                             <Typography variant='subtitle2' fontSize="18px" component='span' mr={4}>
-                                                {formatCurrency(item.price!)}
+                                                {formatCurrency(Number(item.price!))}
                                             </Typography>
                                             <>
                                                 <IconButton onClick={() => handleRemoveFromCartByOne(item)} >
@@ -92,7 +92,7 @@ const CartPage = () => {
                                 Total :    {formatCurrency(totalPrice)}
                             </Typography>
                             <Divider />
-                            <Button sx={{ mt: 5 }} href="/checkout" fullWidth variant="contained">Check out</Button>
+                            <Button disabled={totalQty === 0} sx={{ mt: 5 }} href="/checkout" fullWidth variant="contained">Check out</Button>
                         </CardContent>
                     </Card>
                 </Paper>

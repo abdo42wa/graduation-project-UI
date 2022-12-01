@@ -3,6 +3,12 @@ body {
     margin: 0;
 }
 
+a,
+h5 {
+    text-decoration: none;
+    color: black;
+}
+
 .react-tel-input .form-control {
     background-color: transparent;
     height: 53px;

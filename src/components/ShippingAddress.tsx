@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { Stack } from '@mui/system'
 import { IShippingAddress } from '../interfaces/IShippingAddress';
 import { addUserAddress, getUserAddress } from '../reducers/shippingAddressSlice';
-import { useAppDispatch, useAppSelector } from '../store';
+import { useAppDispatch } from '../store';
 
 
 type ShippingAddressProps = {
@@ -20,7 +20,6 @@ type ShippingAddressProps = {
 const ShippingAddress = ({ onClose, isCanceledActive, updateFields, address, city, country, postalCode }: ShippingAddressProps) => {
 
     const dispatch = useAppDispatch();
-    const { shippingAddress } = useAppSelector((state) => state.shipping);
 
     const addShippingAddress = () => {
         const postObj: IShippingAddress = {

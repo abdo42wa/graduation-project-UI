@@ -39,7 +39,7 @@ export const ProductList = () => {
         ) :
 
           products.map((product) => (
-            <ProductCard _id={product._id} name={product.name} image={product.image} price={Number(formatCurrency(product.price!))} key={product._id} />
+            <ProductCard isOwner={false} _id={product._id} name={product.name} image={product.image} price={product.price!} key={product._id} />
           ))
 
         }
