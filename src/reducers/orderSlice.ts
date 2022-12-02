@@ -6,6 +6,7 @@ import { IOrder } from "../interfaces/IOrder";
 
 interface ProductState {
     order: IOrder | null;
+    orders: IOrder[] | [];
     isLodging: boolean;
     checkout: [] | null
     error: any;
@@ -13,6 +14,7 @@ interface ProductState {
 
 const initialState: ProductState = {
     order: null,
+    orders: [],
     isLodging: false,
     checkout: null,
     error: null,
@@ -45,8 +47,32 @@ export const createOrder = createAsyncThunk<IOrder, IOrder>(
 
             const response = await axios.post("http://localhost:5000/api/order", data, ({ withCredentials: true }));
             return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
 
+export const getAllOrders = createAsyncThunk<IOrder[]>(
+    "order/getAll",
+    async (_, thunkAPI) => {
+        try {
 
+            const response = await axios.get("http://localhost:5000/api/order/admin", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const getAllUserOrders = createAsyncThunk<IOrder[]>(
+    "order/getAllUser",
+    async (_, thunkAPI) => {
+        try {
+
+            const response = await axios.get("http://localhost:5000/api/order", ({ withCredentials: true }));
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -85,6 +111,33 @@ export const orderSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(createOrder.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // get all orders for admin
+        builder.addCase(getAllOrders.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getAllOrders.fulfilled, (state, action) => {
+            state.orders = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllOrders.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+        // getAllUserOrders
+
+        builder.addCase(getAllUserOrders.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getAllUserOrders.fulfilled, (state, action) => {
+            state.orders = action.payload;
+            state.isLodging = false;
+            state.error = action.payload;
+        })
+        builder.addCase(getAllUserOrders.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

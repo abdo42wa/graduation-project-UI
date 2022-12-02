@@ -35,10 +35,10 @@ const ProgressStepper = () => {
         dispatch(getUserAddress());
         setAddress(
             {
-                address: shippingAddress?.address,
-                city: shippingAddress?.city,
-                postalCode: shippingAddress?.postalCode,
-                country: shippingAddress?.country
+                address: shippingAddress?.address ?? "",
+                city: shippingAddress?.city ?? "",
+                postalCode: shippingAddress?.postalCode ?? "",
+                country: shippingAddress?.country ?? ""
             })
     }, [dispatch, shippingAddress])
 

@@ -110,7 +110,7 @@ const AdminDashboard = () => {
 
                     </CardContent>
                     <CardActions>
-                        <Button size="small">See All</Button>
+                        <Button href='/admin/orders' size="small">See All</Button>
                     </CardActions>
                 </Card>
             </Grid>

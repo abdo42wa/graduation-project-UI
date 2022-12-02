@@ -114,10 +114,11 @@ const Navbar = () => {
     >
       <MenuItem onClick={handleMenuClose}><a href='/profile'>Profile</a></MenuItem>
       <MenuItem onClick={handleMenuClose}><a href='/shop'>My shop</a></MenuItem>
+      <MenuItem onClick={handleMenuClose}><a href='/orders'>My Orders</a></MenuItem>
       {user?.isAdmin &&
         <MenuItem onClick={handleMenuClose}><a href='/admin'>Admin</a></MenuItem>
       }
-      <MenuItem onClick={handleMenuClose}><a href='/login' onClick={handleLogOut} >Log out</a></MenuItem>
+      <MenuItem onClick={handleMenuClose}><Button onClick={handleLogOut} >Log out</Button></MenuItem>
     </Menu>
   );
 

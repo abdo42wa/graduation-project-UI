@@ -21,6 +21,8 @@ import CheckOutCancel from './components/CheckOutCancel';
 import SellerShop from './pages/SellerShop';
 import ApproveProduct from './admin/ApproveProduct';
 import EditProduct from './admin/EditeProduct';
+import OrderList from './admin/OrderList';
+import Orders from './pages/Orders';
 
 
 
@@ -57,6 +59,8 @@ function App() {
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/shop' element={<SellerShop />} />
+          <Route path='/admin/orders' element={<OrderList />} />
+          <Route path='/orders' element={<Orders />} />
           <Route path='/admin/approve' element={<ApproveProduct />} />
         </Routes>
       </BrowserRouter>
