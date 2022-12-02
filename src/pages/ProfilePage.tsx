@@ -7,6 +7,7 @@ import { IUser } from '../auth/UserType'
 import { getUserAddress } from '../reducers/shippingAddressSlice'
 import ShippingAddress from '../components/ShippingAddress'
 import { IShippingAddress } from '../interfaces/IShippingAddress'
+import { initialData } from '../components/ProgressStepper'
 
 
 
@@ -22,12 +23,7 @@ const ProfilePage = () => {
     const { user } = useAppSelector(state => state.user)
     const { shippingAddress } = useAppSelector(state => state.shipping)
 
-    const initialData: IShippingAddress = {
-        address: shippingAddress?.address || "",
-        postalCode: shippingAddress?.postalCode || "",
-        city: shippingAddress?.city || "",
-        country: shippingAddress?.country || "",
-    }
+
 
     const [address, setAddress] = useState(initialData)
 

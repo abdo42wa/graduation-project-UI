@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
 import { toast } from "react-toastify";
-import { IProduct } from "../product/ProductType";
+import { ICreateProduct, IProduct } from "../product/ProductType";
 
 interface ProductState {
     products: IProduct[];
@@ -24,6 +24,31 @@ export const getProducts = createAsyncThunk<IProduct[]>(
     async (_, thunkAPI) => {
         try {
             const response = await axios.get("http://localhost:5000/api/products");
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const AdminGetProducts = createAsyncThunk<IProduct[]>(
+    "products/AdminGetProducts",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/products/admin/products");
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const approveProductByID = createAsyncThunk<IProduct, string>(
+    "products/approveProductByID",
+    async (id, thunkAPI) => {
+        try {
+            const response = await axios.patch(`http://localhost:5000/api/products/approve/${id}`);
+            thunkAPI.dispatch(AdminGetProducts())
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -55,7 +80,7 @@ export const getAllUserProducts = createAsyncThunk<IProduct[]>(
     }
 )
 
-export const createProduct = createAsyncThunk<IProduct, IProduct>(
+export const createProduct = createAsyncThunk<IProduct, ICreateProduct>(
     "products/createProduct",
     async (data, thunkAPI) => {
         try {
@@ -90,6 +115,19 @@ export const productSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+
+        // get all products for admin
+        builder.addCase(AdminGetProducts.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(AdminGetProducts.fulfilled, (state, action) => {
+            state.products = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(AdminGetProducts.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         // get product by ID
         builder.addCase(getProductByID.pending, (state) => {
             state.isLodging = true;
@@ -99,6 +137,19 @@ export const productSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(getProductByID.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+        // approve product
+        builder.addCase(approveProductByID.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(approveProductByID.fulfilled, (state, action) => {
+            state.singleProduct = action.payload;
+            toast.success("the product have been approved")
+            state.isLodging = false;
+        })
+        builder.addCase(approveProductByID.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

@@ -12,29 +12,37 @@ import ShippingAddress from './ShippingAddress';
 import Spinner from './Spinner'
 
 
+export const initialData: IShippingAddress = {
+    address: "",
+    postalCode: "",
+    city: "",
+    country: "",
+}
 
 const ProgressStepper = () => {
     const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getUserAddress());
-    }, [dispatch])
-
     const { isLodging } = useAppSelector((state) => state.order);
     const { shippingAddress } = useAppSelector((state) => state.shipping);
     const { cart } = useAppSelector((state) => state.cart);
 
-    const initialData: IShippingAddress = {
-        address: shippingAddress?.address,
-        postalCode: shippingAddress?.postalCode || "",
-        city: shippingAddress?.city || "",
-        country: shippingAddress?.country || "",
-    }
     const { user } = useAppSelector((state) => state.user);
     const steps = ['One', 'Tow', 'Three'];
     const [value, setValue] = useState('Strip');
     // to do move this to septet file 
     const [address, setAddress] = useState(initialData)
+
+    useEffect(() => {
+        dispatch(getUserAddress());
+        setAddress(
+            {
+                address: shippingAddress?.address,
+                city: shippingAddress?.city,
+                postalCode: shippingAddress?.postalCode,
+                country: shippingAddress?.country
+            })
+    }, [dispatch, shippingAddress?.address])
+
+
 
     const updateFields = (fields: Partial<IShippingAddress>) => {
         setAddress(prev => {

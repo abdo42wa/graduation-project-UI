@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from './store';
 import LoginSuccsess from './components/LoginSuccsess';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AdminDaxhborde from './admin/AdminDaxhborde';
+import AdminDashboard from './admin/AdminDashboard';
 import CreateCategory from './admin/CreateCategory';
 import ProfilePage from './pages/ProfilePage';
 import CartPage from './pages/CartPage';
@@ -19,6 +19,7 @@ import CheckOutPage from './pages/CheckOutPage';
 import CheckOutSuccess from './components/CheckOutSuccess';
 import CheckOutCancel from './components/CheckOutCancel';
 import SellerShop from './pages/SellerShop';
+import ApproveProduct from './admin/ApproveProduct';
 
 
 
@@ -50,10 +51,11 @@ function App() {
           <Route path='/create/category' element={<CreateCategory />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
-          <Route path='/admin' element={<AdminDaxhborde />} />
+          <Route path='/admin' element={<AdminDashboard />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/shop' element={<SellerShop />} />
+          <Route path='/admin/approve' element={<ApproveProduct />} />
         </Routes>
       </BrowserRouter>
     </>

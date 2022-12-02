@@ -1,8 +1,8 @@
-import { Add, AddBox, Class, Comment, EditOff, ProductionQuantityLimits, SupervisedUserCircle, Widgets } from '@mui/icons-material'
+import { Add, AddBox, Class, Comment, EditOff, HourglassTop, ProductionQuantityLimits, SupervisedUserCircle, Widgets } from '@mui/icons-material'
 import { Button, Card, CardActions, CardContent, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 
-const AdminDaxhborde = () => {
+const AdminDashboard = () => {
     return (
 
         <Grid container p={10} spacing={4}>
@@ -32,6 +32,14 @@ const AdminDaxhborde = () => {
                                         <EditOff />
                                     </ListItemIcon>
                                     <ListItemText primary="Manage products" />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton href='/admin/approve'>
+                                    <ListItemIcon>
+                                        <HourglassTop />
+                                    </ListItemIcon>
+                                    <ListItemText primary="pending Approve" />
                                 </ListItemButton>
                             </ListItem>
                         </List>
@@ -127,4 +135,4 @@ const AdminDaxhborde = () => {
     )
 }
 
-export default AdminDaxhborde
+export default AdminDashboard

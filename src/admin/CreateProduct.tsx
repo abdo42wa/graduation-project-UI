@@ -2,7 +2,7 @@ import { Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Paper,
 import { Box, Stack } from "@mui/system"
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
-import { IProduct, ProductStatus } from "../product/ProductType"
+import { ICreateProduct, ProductStatus } from "../product/ProductType"
 import { getCategories } from "../reducers/categorySlice"
 import { createProduct } from "../reducers/productSlice"
 import { useAppDispatch, useAppSelector } from "../store"
@@ -40,7 +40,7 @@ const CreateProduct = () => {
     };
 
     const handelSubmit = () => {
-        const postObj: IProduct = {
+        const postObj: ICreateProduct = {
             name,
             category,
             image,

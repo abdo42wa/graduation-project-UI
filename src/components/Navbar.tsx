@@ -58,7 +58,7 @@ const Navbar = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
-  const { currentUsername } = useAppSelector(state => state.user)
+  const { currentUsername, user } = useAppSelector(state => state.user)
   const { cart } = useAppSelector(state => state.cart)
 
 
@@ -114,6 +114,9 @@ const Navbar = () => {
     >
       <MenuItem onClick={handleMenuClose}><a href='/profile'>Profile</a></MenuItem>
       <MenuItem onClick={handleMenuClose}><a href='/shop'>My shop</a></MenuItem>
+      {user?.isAdmin &&
+        <MenuItem onClick={handleMenuClose}><a href='/admin'>Admin</a></MenuItem>
+      }
       <MenuItem onClick={handleMenuClose}><a onClick={handleLogOut} >Log out</a></MenuItem>
     </Menu>
   );
