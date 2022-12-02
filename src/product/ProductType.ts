@@ -28,6 +28,7 @@ export interface IProduct {
 }
 
 export interface ICreateProduct {
+    _id?: string,
     category?: string,
     image?: string,
     name?: string,

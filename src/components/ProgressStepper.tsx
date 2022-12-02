@@ -40,7 +40,7 @@ const ProgressStepper = () => {
                 postalCode: shippingAddress?.postalCode,
                 country: shippingAddress?.country
             })
-    }, [dispatch, shippingAddress?.address])
+    }, [dispatch, shippingAddress])
 
 
 

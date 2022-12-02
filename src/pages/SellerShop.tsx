@@ -8,13 +8,12 @@ import PhoneInput from 'react-phone-input-2'
 import { ISeller } from '../interfaces/ISeller';
 import Spinner from '../components/Spinner';
 import { ProductCard } from '../product/ProductCard';
-import { formatCurrency } from '../utils/formatCurrency';
 import { getAllUserProducts } from '../reducers/productSlice';
 import Menu from '../components/Menu';
 
 const SellerShop = () => {
     const dispatch = useAppDispatch();
-    const { user, isLodging } = useAppSelector((state) => state.user);
+    const { user } = useAppSelector((state) => state.user);
     const { products, isLodging: log } = useAppSelector((state) => state.products);
 
     useEffect(() => {

@@ -5,7 +5,6 @@ import SideBar from "../components/SideBar";
 import HomePageHadar from "../components/HomePageHader";
 import { useAppDispatch, useAppSelector } from "../store";
 import { getProducts } from '../reducers/productSlice';
-import { formatCurrency } from '../utils/formatCurrency';
 
 export const ProductList = () => {
   const { products, isLodging } = useAppSelector(state => state.products)

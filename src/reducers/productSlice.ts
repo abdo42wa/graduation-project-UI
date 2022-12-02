@@ -93,6 +93,20 @@ export const createProduct = createAsyncThunk<IProduct, ICreateProduct>(
     }
 )
 
+export const updateProduct = createAsyncThunk<IProduct, ICreateProduct>(
+    "products/updateProduct",
+    async (data, thunkAPI) => {
+        const { _id } = data
+        try {
+            const response = await axios.put(`http://localhost:5000/api/products/${_id}`, data, ({ withCredentials: true }));
+            thunkAPI.dispatch(getProducts())
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
 //reducers
 
 export const productSlice = createSlice({
@@ -175,6 +189,20 @@ export const productSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(createProduct.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // update product
+        builder.addCase(updateProduct.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(updateProduct.fulfilled, (state, action) => {
+            state.singleProduct = action.payload;
+            toast.success("You have updated the product successfully")
+            state.isLodging = false;
+        })
+        builder.addCase(updateProduct.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

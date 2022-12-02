@@ -3,19 +3,21 @@ import { CardMedia, CardContent, Card, Grid, Link, SpeedDial, Box, SpeedDialActi
 import { IProduct } from './ProductType';
 import { formatCurrency } from '../utils/formatCurrency';
 import { Edit, AttachMoney, Public, MoreVert } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 type ProductCardProps = {
   isOwner: boolean;
 }
 
-const actions = [
-  { icon: <Edit />, name: 'Edit' },
-  { icon: <AttachMoney />, name: 'Discount' },
-  { icon: <Public />, name: 'publish' },
-];
 
 
 export const ProductCard = (product: Pick<IProduct & ProductCardProps, 'image' | 'name' | 'price' | '_id' | 'isOwner'>) => {
+  const history = useNavigate();
+  const actions = [
+    { icon: <Edit onClick={() => history(`/edit/product/${product._id}`)} />, name: 'Edit' },
+    { icon: <AttachMoney />, name: 'Discount' },
+    { icon: <Public />, name: 'publish' },
+  ];
 
   return (
     <Grid item  >

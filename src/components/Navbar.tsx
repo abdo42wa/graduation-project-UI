@@ -117,7 +117,7 @@ const Navbar = () => {
       {user?.isAdmin &&
         <MenuItem onClick={handleMenuClose}><a href='/admin'>Admin</a></MenuItem>
       }
-      <MenuItem onClick={handleMenuClose}><a onClick={handleLogOut} >Log out</a></MenuItem>
+      <MenuItem onClick={handleMenuClose}><a href='/login' onClick={handleLogOut} >Log out</a></MenuItem>
     </Menu>
   );
 

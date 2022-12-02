@@ -24,7 +24,7 @@ const ApproveProduct = () => {
             history('/')
 
         dispatch(AdminGetProducts())
-    }, [dispatch, user])
+    }, [dispatch, user, history])
 
 
     const [page, setPage] = useState(0);

@@ -1,17 +1,7 @@
-import { Apps, ElectricBolt, HourglassTop, Add } from '@mui/icons-material'
-import { List, ListItemText, Paper, ListSubheader, ListItemButton, ListItemIcon } from '@mui/material'
-import { useAppDispatch, useAppSelector } from '../store';
-import { useEffect } from "react"
-import { getCategories } from '../reducers/categorySlice';
+import { Apps, HourglassTop, Add } from '@mui/icons-material'
+import { List, ListItemText, Paper, ListItemButton, ListItemIcon } from '@mui/material'
 
 const Menu = () => {
-    const dispatch = useAppDispatch();
-    const { categories } = useAppSelector((state) => state.category);
-
-    useEffect(() => {
-        dispatch(getCategories())
-    }, [dispatch])
-
     return (
         <Paper  >
             <List

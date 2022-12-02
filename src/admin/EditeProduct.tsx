@@ -1,15 +1,15 @@
 import { Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material"
 import { Box, Stack } from "@mui/system"
 import { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { ICreateProduct, ProductStatus } from "../product/ProductType"
 import { getCategories } from "../reducers/categorySlice"
-import { createProduct } from "../reducers/productSlice"
+import { getProductByID, updateProduct } from "../reducers/productSlice"
 import { useAppDispatch, useAppSelector } from "../store"
 
 
 
-const CreateProduct = () => {
+const EditProduct = () => {
 
     const [status, setStatus] = useState(ProductStatus.NEW)
     const [name, setName] = useState('')
@@ -26,41 +26,71 @@ const CreateProduct = () => {
     const history = useNavigate()
     const { user } = useAppSelector(state => state.user)
     const { categories } = useAppSelector(state => state.category)
+    const { singleProduct } = useAppSelector(state => state.products)
+
+    const location = useLocation();
+
+    const productID = location.pathname.split('/')[3];
 
     useEffect(() => {
         if (user && !user?.isAdmin && user?.type !== "SELLER") {
             history('/')
         }
-
+        dispatch(getProductByID(productID))
         dispatch(getCategories())
-    }, [dispatch, user, history])
+
+        setName(singleProduct?.name!)
+        setBrand(singleProduct?.brand!)
+        setCategory(singleProduct?.category?._id!)
+        setCountInStock(singleProduct?.countInStock!)
+        setDescription(singleProduct?.description!)
+        setDiscount(singleProduct?.discount!)
+        setPrice(singleProduct?.price!)
+        setImage(singleProduct?.image!)
+        setIsPublished(singleProduct?.isPublished!)
+        setStatus(singleProduct?.status!)
+
+    }, [dispatch, user, history, productID, singleProduct])
 
     const handleChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value as ProductStatus);
     };
-
+    const postObj: ICreateProduct = {
+        _id: productID,
+        name,
+        category,
+        image,
+        brand,
+        discount,
+        description,
+        price,
+        status,
+        countInStock,
+        isPublished
+    }
+    const initialValue = {
+        _id: productID,
+        name: singleProduct?.name,
+        category: singleProduct?.category?._id,
+        image: singleProduct?.image,
+        brand: singleProduct?.brand,
+        discount: singleProduct?.discount,
+        description: singleProduct?.description,
+        price: singleProduct?.price,
+        status: singleProduct?.status,
+        countInStock: singleProduct?.countInStock,
+        isPublished: singleProduct?.isPublished
+    }
     const handelSubmit = () => {
-        const postObj: ICreateProduct = {
-            name,
-            category,
-            image,
-            brand,
-            discount,
-            description,
-            price,
-            status,
-            countInStock,
-            isPublished
-        }
-        console.log({ postObj })
-        dispatch(createProduct(postObj))
+        dispatch(updateProduct(postObj))
 
     }
+
     return (
         <Grid container justifyContent="center" display='flex' mt={5}>
             <Paper elevation={3} sx={{ padding: '30px' }}>
                 <Box>
-                    <Typography variant="h2" my={5} display="block" component="h1">Create Product</Typography>
+                    <Typography variant="h2" my={5} display="block" component="h1">Edit Product</Typography>
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth label="Name" name='name' type='text' variant="outlined" value={name} onChange={(e) => setName(e.target.value)} />
                     </Stack>
@@ -132,11 +162,11 @@ const CreateProduct = () => {
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth label="Count In Stock" type='text' variant="outlined" value={countInStock} onChange={(e) => setCountInStock(Number(e.target.value))} />
                     </Stack>
-                    <Button fullWidth variant="contained" onClick={handelSubmit}>Create</Button>
+                    <Button disabled={JSON.stringify(postObj) === JSON.stringify(initialValue)} fullWidth variant="contained" onClick={handelSubmit}>Save</Button>
                 </Box>
             </Paper>
         </Grid>
     )
 }
 
-export default CreateProduct
+export default EditProduct

@@ -20,6 +20,7 @@ import CheckOutSuccess from './components/CheckOutSuccess';
 import CheckOutCancel from './components/CheckOutCancel';
 import SellerShop from './pages/SellerShop';
 import ApproveProduct from './admin/ApproveProduct';
+import EditProduct from './admin/EditeProduct';
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route path='/Product/:id' element={<Product />} />
           <Route path='/checkout' element={<CheckOutPage />} />
           <Route path='/create/product' element={<CreateProduct />} />
+          <Route path='/edit/product/:id' element={<EditProduct />} />
           <Route path='/create/category' element={<CreateCategory />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
