@@ -8,6 +8,7 @@ import cartSlice from "./reducers/cartSlice"
 import shippingAddressSlice from "./reducers/shippingAddressSlice"
 import orderSlice from "./reducers/orderSlice"
 import sellerSlice from "./reducers/sellerSlice"
+import wishlistSlice from "./reducers/wishlistSlice"
 
 const store = configureStore({
     reducer: {
@@ -18,7 +19,8 @@ const store = configureStore({
         cart: cartSlice,
         shipping: shippingAddressSlice,
         order: orderSlice,
-        seller: sellerSlice
+        seller: sellerSlice,
+        wishlist: wishlistSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -10,6 +10,7 @@ import ReviewForm from './ReviewForm'
 import { toast } from "react-toastify";
 import { decrementProduct, incrementProduct } from "../reducers/cartSlice";
 import { formatCurrency } from "../utils/formatCurrency";
+import { addProductWishlist, getProductWishlistById, removeProductWishlist } from "../reducers/wishlistSlice";
 
 const Product = () => {
     const location = useLocation();
@@ -18,7 +19,8 @@ const Product = () => {
 
     const { singleProduct, isLodging } = useAppSelector(state => state.products)
     const { reviews, averageRating } = useAppSelector(state => state.reviews)
-    const { currentUsername } = useAppSelector(state => state.user)
+    const { currentUsername, user } = useAppSelector(state => state.user)
+    const { wishlist } = useAppSelector(state => state.wishlist)
     const { cart } = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch();
 
@@ -26,11 +28,14 @@ const Product = () => {
     const productID = location.pathname.split('/')[2];
 
     const productAmountInCart = cart.find((x) => x._id === productID);
+
     useEffect(() => {
+        dispatch(getProductWishlistById(productID))
         dispatch(getProductByID(productID))
+        setChecked(wishlist ? true : false)
         dispatch(getAllReviewsWithProductID(productID))
         dispatch(getAverageRatingByProductId(productID))
-        //react-hooks/exhaustive-deps
+        // eslint-disable-next-lin
     }, [productID, dispatch])
 
 
@@ -56,7 +61,15 @@ const Product = () => {
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
-        console.log(checked)
+        const data: any = {
+            id: productID,
+            name: user?._id,
+        }
+        if (checked) {
+            dispatch(removeProductWishlist(data))
+        } else {
+            dispatch(addProductWishlist(data))
+        }
     };
     return (
 
