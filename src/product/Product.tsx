@@ -10,7 +10,7 @@ import ReviewForm from './ReviewForm'
 import { toast } from "react-toastify";
 import { decrementProduct, incrementProduct } from "../reducers/cartSlice";
 import { formatCurrency } from "../utils/formatCurrency";
-import { addProductWishlist, getProductWishlistById, removeProductWishlist } from "../reducers/wishlistSlice";
+import { addProductWishlist, removeProductWishlist, getProductWishlistById } from "../reducers/wishlistSlice";
 
 const Product = () => {
     const location = useLocation();
@@ -30,13 +30,12 @@ const Product = () => {
     const productAmountInCart = cart.find((x) => x._id === productID);
 
     useEffect(() => {
-        dispatch(getProductWishlistById(productID))
         dispatch(getProductByID(productID))
-        setChecked(wishlist ? true : false)
+        setChecked(wishlist.length ? true : false)
         dispatch(getAllReviewsWithProductID(productID))
         dispatch(getAverageRatingByProductId(productID))
-        // eslint-disable-next-lin
-    }, [productID, dispatch])
+        dispatch(getProductWishlistById(productID))
+    }, [productID, dispatch, wishlist.length])
 
 
     const handleClickOpen = () => {
@@ -90,7 +89,7 @@ const Product = () => {
                         <Box sx={{ mt: 10, background: "white", p: 3, borderRadius: 3 }}>
                             <Box display="flex" justifyContent="space-between">
                                 <Typography variant='h2' fontSize="2rem">{singleProduct?.name}</Typography>
-                                <Checkbox onChange={handleChange} checked={checked} icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: "red" }} />} />
+                                <Checkbox onChange={handleChange} checked={wishlist.length === 0 ? checked : true} icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: "red" }} />} />
                             </Box>
                             <Stack spacing={3}>
                                 {/* <Typography variant="body2" >{productInfo?.category}</Typography> */}

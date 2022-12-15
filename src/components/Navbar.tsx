@@ -191,7 +191,10 @@ const Navbar = () => {
             />
           </Search>
           {!currentUsername ? (
-            <><Button href='/login'>Log in</Button></>
+            <>
+              <Button href='/login'>Log in</Button>
+              <Button href='/signup'>Register</Button>
+            </>
           ) :
             <>
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

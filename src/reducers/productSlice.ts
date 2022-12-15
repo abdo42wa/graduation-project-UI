@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ICreateProduct, IProduct } from "../product/ProductType";
+import { getProductWishlistById } from "./wishlistSlice";
 
 interface ProductState {
     products: IProduct[];
@@ -61,6 +62,7 @@ export const getProductByID = createAsyncThunk<IProduct, string>(
     async (id, thunkAPI) => {
         try {
             const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+            // thunkAPI.dispatch(getProductWishlistById(id));
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -100,6 +102,35 @@ export const updateProduct = createAsyncThunk<IProduct, ICreateProduct>(
         try {
             const response = await axios.put(`http://localhost:5000/api/products/${_id}`, data, ({ withCredentials: true }));
             thunkAPI.dispatch(getProducts())
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const applyDiscount = createAsyncThunk<IProduct, ICreateProduct>(
+    "products/updateProduct",
+    async (data, thunkAPI) => {
+        const { _id } = data
+        try {
+            const response = await axios.patch(`http://localhost:5000/api/products/discount/${_id}`, data, ({ withCredentials: true }));
+            toast.success("the discount have been applied")
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const changeVisibility = createAsyncThunk<IProduct, ICreateProduct>(
+    "products/updateProduct",
+    async (data, thunkAPI) => {
+        const { _id } = data
+        try {
+            const response = await axios.patch(`http://localhost:5000/api/products/visibility/${_id}`, data, ({ withCredentials: true }));
+            toast.success("You have updated the product visibility")
+            thunkAPI.dispatch(getAllUserProducts());
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)

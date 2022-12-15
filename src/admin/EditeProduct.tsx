@@ -36,21 +36,27 @@ const EditProduct = () => {
         if (user && !user?.isAdmin && user?.type !== "SELLER") {
             history('/')
         }
-        dispatch(getProductByID(productID))
-        dispatch(getCategories())
 
-        setName(singleProduct?.name!)
-        setBrand(singleProduct?.brand!)
-        setCategory(singleProduct?.category?._id!)
-        setCountInStock(singleProduct?.countInStock!)
-        setDescription(singleProduct?.description!)
-        setDiscount(singleProduct?.discount!)
-        setPrice(singleProduct?.price!)
-        setImage(singleProduct?.image!)
-        setIsPublished(singleProduct?.isPublished!)
-        setStatus(singleProduct?.status!)
+        if (!singleProduct?.name || singleProduct._id !== productID) {
 
-    }, [dispatch, user, history, productID, singleProduct])
+            dispatch(getProductByID(productID))
+            dispatch(getCategories())
+        } else {
+            setName(singleProduct?.name!)
+            setBrand(singleProduct?.brand!)
+            setCategory(singleProduct?.category?._id!)
+            setCountInStock(singleProduct?.countInStock!)
+            setDescription(singleProduct?.description!)
+            setDiscount(singleProduct?.discount!)
+            setPrice(singleProduct?.price!)
+            setImage(singleProduct?.image!)
+            setIsPublished(singleProduct?.isPublished!)
+            setStatus(singleProduct?.status!)
+        }
+
+
+
+    }, [user, history, singleProduct])
 
     const handleChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value as ProductStatus);

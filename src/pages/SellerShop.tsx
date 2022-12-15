@@ -47,7 +47,7 @@ const SellerShop = () => {
                                     <Typography textAlign="center" mb={1} display="block" component="p" variant='h5'>Welcome to your shope</Typography>
                                 </Grid>
                                 {products.map((product) => (
-                                    <ProductCard _id={product._id} name={product.name} image={product.image} price={product.price!} key={product._id} isOwner={true} />
+                                    <ProductCard discount={product.discount!} isPublished={product.isPublished!} _id={product._id} name={product.name} image={product.image} price={product.price!} key={product._id} isOwner={true} />
                                 ))}
 
                             </>

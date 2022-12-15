@@ -6,8 +6,6 @@ import { ICategory } from "../interfaces/ICategory"
 import { createCategory, getCategories } from "../reducers/categorySlice"
 import { useAppDispatch, useAppSelector } from "../store"
 
-
-
 const CreateCategory = () => {
 
     const [title, setTitle] = useState('')
@@ -23,7 +21,6 @@ const CreateCategory = () => {
 
             history('/')
         }
-
         dispatch(getCategories())
     }, [dispatch, history, user?.isAdmin])
 
@@ -32,7 +29,6 @@ const CreateCategory = () => {
         const postObj: ICategory = {
             title
         }
-        console.log({ postObj })
         dispatch(createCategory(postObj))
     }
     return (

@@ -20,7 +20,7 @@ const initialState: ProductState = {
 
 //action
 export const getCategories = createAsyncThunk<ICategory[]>(
-    "categoris/get",
+    "categories/get",
     async (_, thunkAPI) => {
         try {
             const response = await axios.get("http://localhost:5000/api/categories");
@@ -32,7 +32,7 @@ export const getCategories = createAsyncThunk<ICategory[]>(
 )
 
 export const getCategoryByID = createAsyncThunk<ICategory, string>(
-    "categoris/getByID",
+    "categories/getByID",
     async (id, thunkAPI) => {
         try {
             const response = await axios.get(`http://localhost:5000/api/categories/${id}`);
@@ -44,7 +44,7 @@ export const getCategoryByID = createAsyncThunk<ICategory, string>(
 )
 
 export const createCategory = createAsyncThunk<ICategory, ICategory>(
-    "categoris/create",
+    "categories/create",
     async (data, thunkAPI) => {
         try {
             const response = await axios.post("http://localhost:5000/api/categories", data, ({ withCredentials: true }));

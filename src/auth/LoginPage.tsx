@@ -2,7 +2,7 @@ import { Google } from '@mui/icons-material'
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login, setIsAuthticated } from '../reducers/userSlice'
+import { login, setIsAuthenticated } from '../reducers/userSlice'
 import { useAppDispatch, useAppSelector } from '../store'
 import { IUser } from './UserType'
 
@@ -12,7 +12,7 @@ const LoginPage = () => {
 
     const history = useNavigate();
     const dispatch = useAppDispatch();
-    const { currentUsername, isLodging: isLoding, error } = useAppSelector(state => state.user)
+    const { currentUsername, isLodging, error } = useAppSelector(state => state.user)
     useEffect(() => {
         if (currentUsername) {
             history('/')
@@ -38,7 +38,7 @@ const LoginPage = () => {
             timer = setInterval(() => {
                 if (newWindow.closed) {
                     localStorage.setItem('userInfo', currentUsername!);
-                    dispatch(setIsAuthticated('true'))
+                    dispatch(setIsAuthenticated('true'))
                     if (timer) clearInterval(timer)
                 }
             })
@@ -48,14 +48,14 @@ const LoginPage = () => {
         <Grid container justifyContent='center' display='flex' my={5} >
             <h2>{error && "fake user go a way"}</h2>
             <Paper elevation={3} sx={{ padding: '30px' }}>
-                <Typography p={2} variant="subtitle1">Dont have an account? <Link to='/signup'>Sign up</Link>  </Typography>
+                <Typography p={2} variant="subtitle1">Do not have an account? <Link to='/signup'>Sign up</Link>  </Typography>
                 <Typography p={2} component="h1" variant="h5">Login</Typography>
                 <TextField sx={{ m: 2 }} fullWidth label="Email" required value={email} type='email' variant="outlined" onChange={(e) => setEmail(e.target.value)} />
                 <TextField sx={{ m: 2 }} fullWidth label="Password" type='password' value={password} variant="outlined" onChange={(e) => setPassword(e.target.value)} />
                 <Button sx={{ m: 2 }} fullWidth variant='contained' onClick={handelLogin}>Login</Button>
                 <Button startIcon={<Google />} sx={{ m: 2 }} color="error" fullWidth variant='contained' onClick={loginWithGoogle}>Google</Button>
             </Paper>
-            {isLoding && <h1>Loding....</h1>}
+            {isLodging && <h1>Lodging....</h1>}
         </Grid>
     )
 }

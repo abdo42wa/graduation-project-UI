@@ -1,17 +1,10 @@
 import { useState, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import { Button, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 import { useAppDispatch, useAppSelector } from '../store';
-import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getAllUserOrders } from '../reducers/orderSlice';
 import Spinner from '../components/Spinner';
+import OrderDetails from '../components/OrderDetails';
 
 const Orders = () => {
 
@@ -29,9 +22,13 @@ const Orders = () => {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [openReviewForm, setOpenReviewForm] = useState(true);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
+    };
+    const handleClose = () => {
+        setOpenReviewForm(false);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +54,7 @@ const Orders = () => {
                                             <TableCell align="left">Payment Method</TableCell>
                                             <TableCell align="right">User name</TableCell>
                                             <TableCell align="right">Total Price</TableCell>
+                                            <TableCell align="right">Actions</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -65,8 +63,10 @@ const Orders = () => {
                                             : orders).map((row) => (
                                                 <TableRow key={row._id}>
                                                     <TableCell style={{ width: 100 }} align="left" >{row.paymentMethod}</TableCell>
-                                                    <TableCell style={{ width: 100 }} align="right">{user?.name}</TableCell>
-                                                    <TableCell style={{ width: 300 }} align="right">{row.totalPrice}</TableCell>
+                                                    <TableCell style={{ width: 100 }} align="right">{user?.name} </TableCell>
+                                                    <TableCell style={{ width: 300 }} align="right">{row.totalPrice} $</TableCell>
+                                                    <TableCell style={{ width: 160 }} align="right"><Button onClick={() => setOpenReviewForm(true)}>see more</Button></TableCell>
+                                                    {openReviewForm && <OrderDetails paymentMethod='123' orderItems={row.orderItems} shippingAddress={row.shippingAddress} open={openReviewForm} onClose={handleClose} />}
                                                 </TableRow>
                                             ))}
                                     </TableBody>

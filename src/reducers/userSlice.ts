@@ -66,8 +66,8 @@ export const createUser = createAsyncThunk<any, IUser>(
     "user/createUser",
     async (data, thunkAPI) => {
         try {
-            const responce = await axios.post("http://localhost:5000/api/user/signup", data, ({ withCredentials: true }));
-            return responce.data;
+            const response = await axios.post("http://localhost:5000/api/user/signup", data, ({ withCredentials: true }));
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -80,8 +80,8 @@ export const updateUserProfile = createAsyncThunk<any, IUser>(
     "user/update",
     async (data, thunkAPI) => {
         try {
-            const responce = await axios.put("http://localhost:5000/api/user/profile", data, ({ withCredentials: true }));
-            return responce.data;
+            const response = await axios.put("http://localhost:5000/api/user/profile", data, ({ withCredentials: true }));
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -90,14 +90,14 @@ export const updateUserProfile = createAsyncThunk<any, IUser>(
 
 //reducers
 
-export const userSilce = createSlice({
+export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<IUser>) => {
             state.user = action.payload
         },
-        setIsAuthticated: (state, action) => {
+        setIsAuthenticated: (state, action) => {
             state.currentUsername = action.payload
         }
     },
@@ -156,7 +156,7 @@ export const userSilce = createSlice({
         });
         builder.addCase(updateUserProfile.fulfilled, (state, action) => {
             state.user = action.payload;
-            toast.success("You have update you name successfuly")
+            toast.success("You have update you name successfully")
             state.isLodging = false;
         })
         builder.addCase(updateUserProfile.rejected, (state, action) => {
@@ -168,5 +168,5 @@ export const userSilce = createSlice({
 
 })
 
-export default userSilce.reducer;
-export const { setUser, setIsAuthticated } = userSilce.actions;
+export default userSlice.reducer;
+export const { setUser, setIsAuthenticated } = userSlice.actions;

@@ -24,8 +24,6 @@ import EditProduct from './admin/EditeProduct';
 import OrderList from './admin/OrderList';
 import Orders from './pages/Orders';
 
-
-
 function App() {
   const dispatch = useAppDispatch();
   const { currentUsername } = useAppSelector(state => state.user)
