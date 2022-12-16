@@ -41,8 +41,6 @@ const OrderDetails = (props: Pick<IOrder & CartProps, 'id' | 'paymentMethod' | '
 
                             ))}
                         </>
-
-
                     </Box>
 
                     <Box>

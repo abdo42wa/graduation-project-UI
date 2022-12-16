@@ -29,6 +29,7 @@ function SignupPage() {
             password
         }
         dispatch(createUser(postObj))
+        // history('/login')
     }
     return (
         <Grid container justifyContent='center' display='flex' my={5} >

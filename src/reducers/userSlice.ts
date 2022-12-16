@@ -8,6 +8,7 @@ interface UserState {
     user: IUser | null;
     isLodging: boolean;
     error: any;
+    success: any;
     currentUsername: string | null;
 }
 
@@ -15,6 +16,7 @@ const initialState: UserState = {
     user: null,
     isLodging: false,
     error: null,
+    success: null,
     currentUsername: currentUser ? currentUser : null
 
 }
@@ -33,6 +35,19 @@ export const getUser = createAsyncThunk<IUser>(
     }
 )
 
+export const getUserToken = createAsyncThunk<any, any>(
+    "user/getUserToken",
+    async (data, thunkAPI) => {
+        const { _id, token }: any = data;
+        try {
+            const response = await axios.get(`http://localhost:5000/api/user/${_id}/verify/${token}`, ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
 // log in
 export const login = createAsyncThunk<IUser, IUser>(
     "user/login",
@@ -43,7 +58,8 @@ export const login = createAsyncThunk<IUser, IUser>(
             getUser();
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error)
+            if (error instanceof Error)
+                return thunkAPI.rejectWithValue(error.message)
         }
     }
 )
@@ -69,7 +85,8 @@ export const createUser = createAsyncThunk<any, IUser>(
             const response = await axios.post("http://localhost:5000/api/user/signup", data, ({ withCredentials: true }));
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error)
+            if (error instanceof Error)
+                return thunkAPI.rejectWithValue(error.message)
         }
     }
 )
@@ -83,7 +100,9 @@ export const updateUserProfile = createAsyncThunk<any, IUser>(
             const response = await axios.put("http://localhost:5000/api/user/profile", data, ({ withCredentials: true }));
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error)
+            if (error instanceof Error)
+
+                return thunkAPI.rejectWithValue(error.message)
         }
     }
 )
@@ -125,6 +144,20 @@ export const userSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+        // get user token
+
+
+        builder.addCase(getUserToken.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(getUserToken.fulfilled, (state, action) => {
+            state.success = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getUserToken.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         builder.addCase(logOut.pending, (state) => {
             state.isLodging = true;
             state.currentUsername = ""
@@ -142,12 +175,11 @@ export const userSlice = createSlice({
             state.isLodging = true;
         });
         builder.addCase(createUser.fulfilled, (state, action) => {
-            state.user = action.payload;
-            state.currentUsername = currentUser;
             state.isLodging = false;
+            state.success = action.payload
         })
         builder.addCase(createUser.rejected, (state, action) => {
-            state.error = action.payload;
+            state.error = action.error;
             state.isLodging = false;
         })
 

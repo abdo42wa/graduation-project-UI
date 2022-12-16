@@ -135,7 +135,6 @@ export const orderSlice = createSlice({
         builder.addCase(getAllUserOrders.fulfilled, (state, action) => {
             state.orders = action.payload;
             state.isLodging = false;
-            state.error = action.payload;
         })
         builder.addCase(getAllUserOrders.rejected, (state, action) => {
             state.error = action.payload;

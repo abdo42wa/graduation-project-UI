@@ -23,6 +23,7 @@ import ApproveProduct from './admin/ApproveProduct';
 import EditProduct from './admin/EditeProduct';
 import OrderList from './admin/OrderList';
 import Orders from './pages/Orders';
+import EmailVerify from './auth/EmailVerify';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ function App() {
           <Route path='/admin/orders' element={<OrderList />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/admin/approve' element={<ApproveProduct />} />
+          <Route path='/succsess/user/:id/verify/:token' element={<EmailVerify />} />
         </Routes>
       </BrowserRouter>
     </>
