@@ -1,7 +1,9 @@
-import { Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material"
+import { PhotoCamera } from "@mui/icons-material"
+import { Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material"
 import { Box, Stack } from "@mui/system"
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { ICreateProduct, ProductStatus } from "../product/ProductType"
 import { getCategories } from "../reducers/categorySlice"
 import { createProduct } from "../reducers/productSlice"
@@ -15,6 +17,7 @@ const CreateProduct = () => {
     const [name, setName] = useState('')
     const [category, setCategory] = useState('')
     const [image, setImage] = useState('')
+    const [imageCloud, setImageCloud] = useState('')
     const [brand, setBrand] = useState('')
     const [discount, setDiscount] = useState(0)
     const [description, setDescription] = useState('')
@@ -39,21 +42,48 @@ const CreateProduct = () => {
         setStatus(event.target.value as ProductStatus);
     };
 
+    const handleUploadImageChange = (e: any) => {
+        transformFile(e.target.files[0])
+    };
+
+    const transformFile = (file: Blob) => {
+        const reader = new FileReader();
+        if (file) {
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+                setImageCloud(reader.result as string);
+            }
+        } else {
+            setImageCloud("");
+        }
+    }
+
     const handelSubmit = () => {
         const postObj: ICreateProduct = {
             name,
             category,
-            image,
+            image: imageCloud,
             brand,
             discount,
             description,
             price,
             status,
             countInStock,
-            isPublished
+            isPublished,
         }
-        console.log({ postObj })
-        dispatch(createProduct(postObj))
+        if (image.length < 5063) {
+            toast.warning("Image size it to large")
+        } else {
+
+            dispatch(createProduct(postObj))
+            setImageCloud("");
+            setName("");
+            setBrand("");
+            setDescription("");
+            setPrice(0);
+            setDiscount(0);
+            setCountInStock(0);
+        }
 
     }
     return (
@@ -118,7 +148,14 @@ const CreateProduct = () => {
                         </FormControl>
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
-                        <TextField fullWidth label="Image Link" type='text' value={image} variant="outlined" onChange={(e) => setImage(e.target.value)} />
+                        <Button variant="contained" component="label" onChange={(e) => handleUploadImageChange(e)}>
+                            Upload
+                            <input hidden accept="image/*" multiple type="file" />
+                        </Button>
+                        <IconButton color="primary" aria-label="upload picture" component="label">
+                            <input hidden accept="image/*" type="file" />
+                            <PhotoCamera />
+                        </IconButton>
                     </Stack>
                     <Stack direction="row" spacing={2} mb={2} >
                         <TextField fullWidth label="Brand" type='text' variant="outlined" value={brand} onChange={(e) => setBrand(e.target.value)} />
@@ -134,6 +171,7 @@ const CreateProduct = () => {
                     </Stack>
                     <Button fullWidth variant="contained" onClick={handelSubmit}>Create</Button>
                 </Box>
+
             </Paper>
         </Grid>
     )

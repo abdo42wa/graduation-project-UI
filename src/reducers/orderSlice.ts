@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
-import { IOrder } from "../interfaces/IOrder";
+import { IOrder, IOrderItems } from "../interfaces/IOrder";
 
 
 
@@ -10,11 +10,15 @@ interface ProductState {
     isLodging: boolean;
     checkout: [] | null
     error: any;
+    sellerOrders: IOrderItems[] | [],
+    sellerOrder: IOrderItems | null,
 }
 
 const initialState: ProductState = {
     order: null,
     orders: [],
+    sellerOrders: [],
+    sellerOrder: null,
     isLodging: false,
     checkout: null,
     error: null,
@@ -72,6 +76,34 @@ export const getAllUserOrders = createAsyncThunk<IOrder[]>(
         try {
 
             const response = await axios.get("http://localhost:5000/api/order", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const getAllSellerOrders = createAsyncThunk<IOrderItems[]>(
+    "order/getAllSellerOrders",
+    async (_, thunkAPI) => {
+        try {
+
+            const response = await axios.get("http://localhost:5000/api/order/seller", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const updateSellerOrder = createAsyncThunk<IOrderItems, IOrderItems>(
+    "order/updateSellerOrder",
+    async (data, thunkAPI) => {
+        const { _id } = data
+        try {
+
+            const response = await axios.post(`http://localhost:5000/api/order/seller/${_id}`, data, ({ withCredentials: true }));
+            thunkAPI.dispatch(getAllSellerOrders())
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -140,6 +172,32 @@ export const orderSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+
+        // get all seller orders
+        builder.addCase(getAllSellerOrders.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getAllSellerOrders.fulfilled, (state, action) => {
+            state.sellerOrders = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllSellerOrders.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+        // get all seller orders
+        builder.addCase(updateSellerOrder.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(updateSellerOrder.fulfilled, (state, action) => {
+            state.sellerOrder = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(updateSellerOrder.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
     }
 
 })

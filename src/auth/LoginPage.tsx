@@ -46,7 +46,7 @@ const LoginPage = () => {
     }
     return (
         <Grid container justifyContent='center' display='flex' my={5} >
-            <h2>{error && "fake user go a way"}</h2>
+            <Typography sx={{ mr: 5, color: 'red' }}>{error && "Wrong email or password"}</Typography>
             <Paper elevation={3} sx={{ padding: '30px' }}>
                 <Typography p={2} variant="subtitle1">Do not have an account? <Link to='/signup'>Sign up</Link>  </Typography>
                 <Typography p={2} component="h1" variant="h5">Login</Typography>

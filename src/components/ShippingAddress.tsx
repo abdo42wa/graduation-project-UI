@@ -30,6 +30,7 @@ const ShippingAddress = ({ onClose, isCanceledActive, updateFields, address, cit
         }
 
         dispatch(addUserAddress(postObj))
+        onClose?.(false)
     }
 
     useEffect(() => {

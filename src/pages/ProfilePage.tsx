@@ -19,6 +19,7 @@ const ProfilePage = () => {
 
 
     const [isForm, setIsForm] = useState(false)
+    const [isForm2, setIsForm2] = useState(false)
     const [name, setName] = useState('')
     const { user } = useAppSelector(state => state.user)
     const { shippingAddress } = useAppSelector(state => state.shipping)
@@ -41,6 +42,7 @@ const ProfilePage = () => {
             name
         }
         dispatch(updateUserProfile(postObj))
+        setIsForm(false)
     }
 
 
@@ -103,12 +105,12 @@ const ProfilePage = () => {
                         </Typography>
 
                         <Box display="flex" justifyContent="space-between" mt={3} mb={3}>
-                            {!isForm ? (
+                            {!isForm2 ? (
                                 <>
                                     {!shippingAddress?.address ? (
                                         <>
                                             <Typography>No date</Typography>
-                                            <Button onClick={(e) => setIsForm(true)}>Add</Button>
+                                            <Button onClick={(e) => setIsForm2(true)}>Add</Button>
                                         </>
                                     ) : (
                                         <Box>
@@ -130,14 +132,14 @@ const ProfilePage = () => {
                                             </Box>
 
 
-                                            <Button size="small" onClick={(e) => setIsForm(true)}>Edit</Button>
+                                            <Button size="small" onClick={(e) => setIsForm2(true)}>Edit</Button>
 
                                         </Box>
                                     )}
                                 </>
                             ) : (
                                 <Box>
-                                    <ShippingAddress {...address} updateFields={updateFields} isCanceledActive={true} onClose={() => setIsForm(false)} />
+                                    <ShippingAddress {...address} updateFields={updateFields} isCanceledActive={true} onClose={() => setIsForm2(false)} />
                                 </Box>
                             )}
                         </Box>

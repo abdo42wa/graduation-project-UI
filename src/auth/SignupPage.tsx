@@ -1,6 +1,7 @@
 import { Grid, Paper, TextField, Typography, Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import { createUser } from '../reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 import { IUser } from './UserType';
@@ -28,7 +29,14 @@ function SignupPage() {
             email,
             password
         }
-        dispatch(createUser(postObj))
+
+        if (password === confirmPassword) {
+
+            dispatch(createUser(postObj))
+            toast.success("Please verify your email in order to log in")
+        } else {
+            toast.error("Password does not match ")
+        }
         // history('/login')
     }
     return (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import RejectProduct from '../components/RejectProduct';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { AdminGetProducts, approveProductByID } from '../reducers/productSlice';
 import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client'
 
 const ApproveProduct = () => {
 
@@ -29,7 +31,7 @@ const ApproveProduct = () => {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
+    const [openForm, setOpenForm] = useState(false);
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -39,10 +41,20 @@ const ApproveProduct = () => {
         setPage(0);
     };
 
-    const approveProduct = (id: string) => {
+    const approveProduct = (id: string, userId: any, productName: string) => {
+        const socket = io("http://localhost:5000");
+        socket.emit("sendNotification", {
+            productID: id,
+            message: `Your product ${productName} got approve`,
+            receiverId: userId,
+            reded: false,
+        });
         dispatch(approveProductByID(id))
     }
 
+    const handleClose = () => {
+        setOpenForm(false);
+    };
     return (
         <>
             <Typography textAlign='center' variant='h4' p={3}>Waiting approve products, {products.length}</Typography>
@@ -67,7 +79,8 @@ const ApproveProduct = () => {
                                         <TableCell style={{ width: 100 }} align="right">{row.category?.title}</TableCell>
                                         <TableCell style={{ width: 300 }} align="right">{row.description}</TableCell>
                                         <TableCell style={{ width: 100 }} align="right">{row.price}</TableCell>
-                                        <TableCell style={{ width: 160 }} align="right"><Button onClick={() => approveProduct(row._id!)}>Approve</Button><Button>Reject</Button></TableCell>
+                                        <TableCell style={{ width: 160 }} align="right"><Button onClick={() => approveProduct(row._id!, row.user, row.name!)}>Approve</Button><Button onClick={() => setOpenForm(true)}>Reject</Button></TableCell>
+                                        {openForm && <RejectProduct open={openForm} onClose={() => handleClose()} productID={row._id!} userID={row.user!} productName={row.name!} />}
                                     </TableRow>
                                 ))}
                         </TableBody>

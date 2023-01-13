@@ -24,6 +24,8 @@ import EditProduct from './admin/EditeProduct';
 import OrderList from './admin/OrderList';
 import Orders from './pages/Orders';
 import EmailVerify from './auth/EmailVerify';
+import AllProducts from './pages/AllProducts';
+import ShopOrder from './pages/ShopOrder';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -43,7 +45,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/success' element={<LoginSuccsess />} />
+          <Route path='/login/success' element={<LoginSuccsess />} />
           <Route path='/success/checkout' element={<CheckOutSuccess />} />
           <Route path='/cancel/checkout' element={<CheckOutCancel />} />
           <Route path='/' element={<ProductList />} />
@@ -58,10 +60,16 @@ function App() {
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/shop' element={<SellerShop />} />
+          <Route path='/shop/:rejected' element={<SellerShop />} />
+          <Route path='/shop/:pending' element={<SellerShop />} />
           <Route path='/admin/orders' element={<OrderList />} />
           <Route path='/orders' element={<Orders />} />
+          <Route path='/orders/shop' element={<ShopOrder />} />
           <Route path='/admin/approve' element={<ApproveProduct />} />
           <Route path='/succsess/user/:id/verify/:token' element={<EmailVerify />} />
+          <Route path='/products' element={<AllProducts />} />
+          <Route path='/search/:search' element={<AllProducts />} />
+          <Route path='/category/:id' element={<AllProducts />} />
         </Routes>
       </BrowserRouter>
     </>

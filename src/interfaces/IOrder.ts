@@ -14,5 +14,13 @@ export interface IOrder {
     isPaid?: boolean,
     isDelivered?: boolean,
     deliveredAt?: Date
+}
 
+export interface IOrderItems {
+    _id?: string,
+    name?: string,
+    image?: string,
+    price?: number,
+    status?: string,
+    user?: string,
 }

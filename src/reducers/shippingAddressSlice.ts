@@ -29,6 +29,18 @@ export const getUserAddress = createAsyncThunk<IShippingAddress>(
     }
 )
 
+export const getUserAddressById = createAsyncThunk<IShippingAddress, string>(
+    "shippingAddress/getUserAddressById",
+    async (_id, thunkAPI) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/address/${_id}`, ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
 
 export const addUserAddress = createAsyncThunk<IShippingAddress, IShippingAddress>(
     "shippingAddress/create",
@@ -63,6 +75,17 @@ export const shippingAddressSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(getUserAddress.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getUserAddressById.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getUserAddressById.fulfilled, (state, action) => {
+            state.shippingAddress = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getUserAddressById.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

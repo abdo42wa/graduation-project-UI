@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { styled, alpha, AppBar, Box, Toolbar, Typography, InputBase, Badge, MenuItem, Menu, Button } from '@mui/material';
 import { IconButton } from '@mui/material';
-import { Search as SearchIcon, ShoppingCart } from '@mui/icons-material';
+import { Drafts, Markunread, Notifications, Search as SearchIcon, ShoppingCart } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NavbarLogoIcon from '../icons/NavbarLogoIcon'
 import { useAppDispatch, useAppSelector } from '../store';
 import { logOut } from '../reducers/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { io } from "socket.io-client";
 
 
 
@@ -54,25 +55,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notifications, setNotifications] = useState<null | HTMLElement>(null);
+  const [notification, setNotification] = useState<any | []>([]);
   const [cartCount, setCartCount] = useState(0);
+  const [search, setSearch] = useState("");
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
   const { currentUsername, user } = useAppSelector(state => state.user)
   const { cart } = useAppSelector(state => state.cart)
 
+  const newNotification = notification.find((x: any) => (x.reded === false))
+
+  const socket = io("http://localhost:5000");
 
   useEffect(() => {
     const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
     setCartCount(() => totalQty);
-  }, [cart])
+    socket.emit("setup", user?._id);
+    console.log(newNotification)
 
 
+  }, [cart, notification, socket])
+
+  useEffect(() => {
+    socket.on("getNotification", (data) => {
+      setNotification((prv: any) => [...prv, data])
+      console.log(data, user?._id)
+    })
+    console.log(newNotification)
+  }, [socket])
+
+  console.log(notification)
+  //639c53c98d98d232f0223046
   const isMenuOpen = Boolean(anchorEl);
+  const isNotificationOpen = Boolean(notifications);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleNotificationCloseOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotifications(event.currentTarget);
   };
   const dispatch = useAppDispatch();
   const history = useNavigate();
@@ -91,16 +115,30 @@ const Navbar = () => {
     handleMobileMenuClose();
   };
 
+  const handleNotificationClose = () => {
+    setNotifications(null);
+    // handleMobileMenuClose();
+  };
+
+  const handelSearch = (event: React.ChangeEvent<any>) => {
+    event.preventDefault();
+    if (search.trim()) {
+      history(`/search/${search}`)
+    } else {
+      history('/products')
+    }
+  }
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = 'primary-search-account-menu';
+  const NotificationID = 'notification';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={menuId}
@@ -121,7 +159,27 @@ const Navbar = () => {
       <MenuItem onClick={handleMenuClose}><Button onClick={handleLogOut} >Log out</Button></MenuItem>
     </Menu>
   );
-
+  const renderNotification = (
+    <Menu
+      anchorEl={notifications}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      id={NotificationID}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isNotificationOpen}
+      onClose={handleNotificationClose}
+    >
+      {notification.map((x: any, index: number) => (
+        <MenuItem key={index} onClick={() => x.reded = true}>{x.message} {x.reded ? <Drafts sx={{ ml: '5px' }} /> : <Markunread sx={{ ml: '5px' }} />}</MenuItem>
+      ))}
+    </Menu>
+  );
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -182,13 +240,16 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 1 }} />
           <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <form onSubmit={handelSearch}>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </form>
           </Search>
           {!currentUsername ? (
             <>
@@ -205,6 +266,16 @@ const Navbar = () => {
                 >
                   <Badge badgeContent={cartCount} color="error">
                     <ShoppingCart />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  aria-controls={NotificationID}
+                  onClick={handleNotificationCloseOpen}
+                >
+                  <Badge badgeContent={newNotification && true} color="error">
+                    <Notifications />
                   </Badge>
                 </IconButton>
                 <IconButton
@@ -238,6 +309,7 @@ const Navbar = () => {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderNotification}
     </Box>
   );
 }

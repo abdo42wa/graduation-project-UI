@@ -1,5 +1,7 @@
+import { CheckCircle } from '@mui/icons-material'
+import { Box } from '@mui/system'
 import { useState, useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { getUserToken } from '../reducers/userSlice'
 import { useAppDispatch, useAppSelector } from '../store'
 
@@ -19,7 +21,15 @@ const EmailVerify = () => {
     return (
         <>
             {success ? (
-                <p>You have vitrified your account successfully</p>
+                <>
+
+                    <p>You have vitrified your account successfully</p>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <CheckCircle color='success' sx={{ fontSize: "100px" }} />
+                        <Link to='/login'>Login</Link>
+                    </Box>
+
+                </>
 
             ) : (
                 <p>404 Invalid link</p>

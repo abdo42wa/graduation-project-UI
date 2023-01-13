@@ -3,8 +3,10 @@ import { List, ListItemText, Paper, ListSubheader, ListItemButton, ListItemIcon 
 import { useAppDispatch, useAppSelector } from '../store';
 import { useEffect } from "react"
 import { getCategories } from '../reducers/categorySlice';
+import { Link } from 'react-router-dom';
 
 const SideBar = () => {
+
     const dispatch = useAppDispatch();
     const { categories } = useAppSelector((state) => state.category);
 
@@ -27,12 +29,15 @@ const SideBar = () => {
             >
                 {categories.map((category, index) =>
                 (
-                    <ListItemButton key={category._id}>
-                        <ListItemIcon>
-                            {icons[index]}
-                        </ListItemIcon>
-                        <ListItemText primary={category.title} />
-                    </ListItemButton>
+                    <Link to={`/category/${category._id}`}>
+                        <ListItemButton key={category._id} >
+                            <ListItemIcon>
+                                {icons[index]}
+                            </ListItemIcon>
+                            <ListItemText primary={category.title} />
+                        </ListItemButton>
+                    </Link>
+
                 )
                 )}
             </List>

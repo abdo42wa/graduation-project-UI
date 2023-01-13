@@ -12,7 +12,7 @@ export enum ProductStatus {
 
 export interface IProduct {
     _id?: string,
-    user?: { name: string, _id: string },
+    user?: any,
     category?: { title: string, _id: string },
     image?: string,
     name?: string,
@@ -25,6 +25,7 @@ export interface IProduct {
     isPublished?: boolean,
     countInStock?: number,
     discount?: number,
+    rejectedMessage?: string,
 }
 
 export interface ICreateProduct {
@@ -39,4 +40,5 @@ export interface ICreateProduct {
     isPublished?: boolean,
     countInStock?: number,
     discount?: number,
+    rejectedMessage?: string,
 }

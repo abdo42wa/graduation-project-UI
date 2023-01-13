@@ -1,8 +1,18 @@
+import { useEffect } from 'react'
 import { Add, AddBox, Class, Comment, EditOff, HourglassTop, ProductionQuantityLimits, SupervisedUserCircle, Widgets } from '@mui/icons-material'
 import { Button, Card, CardActions, CardContent, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { useAppSelector } from '../store'
+import { useNavigate } from 'react-router-dom'
 
 const AdminDashboard = () => {
+    const history = useNavigate();
+    const { currentUsername, isLodging, error } = useAppSelector(state => state.user)
+    useEffect(() => {
+        if (!currentUsername) {
+            history('/login')
+        }
+    }, [history, currentUsername])
     return (
 
         <Grid container p={10} spacing={4}>
@@ -54,12 +64,12 @@ const AdminDashboard = () => {
                         </Typography>
                         <SupervisedUserCircle sx={{ fontSize: "50px", color: 'green' }} />
                         <Typography variant="h5" component="div">
-                            50
+                            15
                         </Typography>
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button size="small">See All</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
             <Grid item>
@@ -70,13 +80,13 @@ const AdminDashboard = () => {
                         </Typography>
                         <Widgets sx={{ fontSize: "50px", color: 'red' }} />
                         <Typography variant="h5" component="div">
-                            50
+                            12
                         </Typography>
 
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button size="small">See All</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
             <Grid item>
@@ -87,13 +97,13 @@ const AdminDashboard = () => {
                         </Typography>
                         <Class sx={{ fontSize: "50px", color: 'yellow' }} />
                         <Typography variant="h5" component="div">
-                            50
+                            3
                         </Typography>
 
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button size="small">See All</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
 
@@ -105,13 +115,13 @@ const AdminDashboard = () => {
                         </Typography>
                         <ProductionQuantityLimits sx={{ fontSize: "50px", color: 'blue' }} />
                         <Typography variant="h5" component="div">
-                            50
+                            15
                         </Typography>
 
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button href='/admin/orders' size="small">See All</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
             <Grid item>
@@ -122,13 +132,13 @@ const AdminDashboard = () => {
                         </Typography>
                         <Comment sx={{ fontSize: "50px", color: 'burlywood' }} />
                         <Typography variant="h5" component="div">
-                            500
+                            20
                         </Typography>
 
                     </CardContent>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button size="small">See All</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Grid>
         </Grid>
