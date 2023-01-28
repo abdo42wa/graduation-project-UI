@@ -9,6 +9,7 @@ interface ProductState {
     singleProduct: IProduct | null;
     isLodging: boolean;
     error: any;
+    productData: []
 }
 
 const initialState: ProductState = {
@@ -16,6 +17,7 @@ const initialState: ProductState = {
     singleProduct: null,
     isLodging: false,
     error: null,
+    productData: []
 
 }
 
@@ -211,8 +213,34 @@ export const rejectProduct = createAsyncThunk<IProduct, ICreateProduct>(
         }
     }
 )
+export const getProductStatsAdmin = createAsyncThunk<any>(
+    "user/getProductStatsAdmin",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/products/stats", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
 
+                return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
 
+export const getAllProduct = createAsyncThunk<IProduct[]>(
+    "user/getAllProduct",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/products/all", ({ withCredentials: true }));
+
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
+
+                return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
 //reducers
 
 export const productSlice = createSlice({
@@ -249,6 +277,20 @@ export const productSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+
+        // get searched getProductStatsAdmin
+
+        builder.addCase(getProductStatsAdmin.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(getProductStatsAdmin.fulfilled, (state, action) => {
+            state.productData = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getProductStatsAdmin.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         // pending products
         builder.addCase(getAllUserProductsWaiting.pending, (state) => {
             state.isLodging = true;
@@ -258,6 +300,20 @@ export const productSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(getAllUserProductsWaiting.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // all product
+
+        builder.addCase(getAllProduct.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(getAllProduct.fulfilled, (state, action) => {
+            state.products = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllProduct.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

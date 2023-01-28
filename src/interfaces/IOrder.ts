@@ -21,6 +21,6 @@ export interface IOrderItems {
     name?: string,
     image?: string,
     price?: number,
-    status?: string,
+    orderStatus?: string,
     user?: string,
 }

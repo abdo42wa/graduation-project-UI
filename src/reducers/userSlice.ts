@@ -1,15 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 import { IUser } from "../auth/UserType";
 
 const currentUser = localStorage.getItem("userInfo");
 interface UserState {
     user: IUser | null;
+    users: IUser[];
     isLodging: boolean;
     error: any;
     success: any;
     currentUsername: string | null;
+    data: [];
 }
 
 const initialState: UserState = {
@@ -17,6 +20,8 @@ const initialState: UserState = {
     isLodging: false,
     error: null,
     success: null,
+    data: [],
+    users: [],
     currentUsername: currentUser ? currentUser : null
 
 }
@@ -47,7 +52,7 @@ export const getUserToken = createAsyncThunk<any, any>(
         }
     }
 )
-
+// const socket = io("http://localhost:5000");
 // log in
 export const login = createAsyncThunk<IUser, IUser>(
     "user/login",
@@ -55,6 +60,8 @@ export const login = createAsyncThunk<IUser, IUser>(
         try {
             const response = await axios.post("http://localhost:5000/api/user/login", data, ({ withCredentials: true }));
             localStorage.setItem('userInfo', JSON.stringify(response.data.user.name));
+            console.log({ userID: response.data.user._id })
+            // socket.emit("setup", response.data.user._id);
             getUser();
             return response.data;
         } catch (error) {
@@ -90,6 +97,18 @@ export const createUser = createAsyncThunk<any, IUser>(
         }
     }
 )
+export const getAllUsers = createAsyncThunk<IUser[]>(
+    "user/getAllUsers",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/user/allusers", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
+                return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
 
 // update User
 
@@ -107,6 +126,19 @@ export const updateUserProfile = createAsyncThunk<any, IUser>(
     }
 )
 
+export const getUserStatsAdmin = createAsyncThunk<any>(
+    "user/getUserStatsAdmin",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/user/stats", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
+
+                return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
 //reducers
 
 export const userSlice = createSlice({
@@ -144,6 +176,18 @@ export const userSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+
+        builder.addCase(getAllUsers.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(getAllUsers.fulfilled, (state, action) => {
+            state.users = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllUsers.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         // get user token
 
 
@@ -158,6 +202,19 @@ export const userSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+        // get user stats
+        builder.addCase(getUserStatsAdmin.pending, (state) => {
+            state.isLodging = true;
+        });
+        builder.addCase(getUserStatsAdmin.fulfilled, (state, action) => {
+            state.data = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getUserStatsAdmin.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+        // log out 
         builder.addCase(logOut.pending, (state) => {
             state.isLodging = true;
             state.currentUsername = ""

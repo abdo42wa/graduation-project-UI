@@ -11,6 +11,6 @@ export interface IUser {
     name?: string,
     bankAaccount?: string,
     password?: string,
-    email_veryfied?: boolean,
+    email_verified?: boolean,
     googleID?: string,
 }

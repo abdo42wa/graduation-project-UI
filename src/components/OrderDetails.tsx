@@ -110,7 +110,8 @@ const OrderDetails = (props: Pick<IOrder & CartProps, 'id' | 'paymentMethod' | '
                                     <p>{x.price}</p>
                                     <p>Status: </p>
                                     <Stack sx={{ width: '100%' }} spacing={4}>
-                                        <Stepper alternativeLabel activeStep={steps.indexOf(x.status!)} connector={<ColorlibConnector />}>
+                                        {/* @ts-ignore */}
+                                        <Stepper alternativeLabel activeStep={steps.indexOf(x.orderStatus!)} connector={<ColorlibConnector />}>
                                             {steps.map((label) => (
                                                 <Step key={label}>
                                                     <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>

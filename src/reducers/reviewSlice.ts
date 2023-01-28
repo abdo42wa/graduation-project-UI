@@ -9,6 +9,7 @@ interface ProductState {
     singleReview: IReview | null
     averageRating: number
     error: any;
+    reviewData: []
 }
 
 const initialState: ProductState = {
@@ -17,6 +18,7 @@ const initialState: ProductState = {
     singleReview: null,
     averageRating: 0,
     error: null,
+    reviewData: []
 
 }
 
@@ -33,12 +35,36 @@ export const getAllReviewsWithProductID = createAsyncThunk<IReview[], string>(
     }
 )
 
+export const getAllReviews = createAsyncThunk<IReview[]>(
+    "reviews/getAllReviews",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/review/all`);
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
 export const getAverageRatingByProductId = createAsyncThunk<number, string>(
     "reviews/getAverage",
     async (id, thunkAPI) => {
         try {
             const response = await axios.get(`http://localhost:5000/api/review/avr/${id}`);
             return response.data[0];
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const deleteReview = createAsyncThunk<any, string>(
+    "reviews/deleteReview",
+    async (id, thunkAPI) => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/api/review/delete/${id}`);
+            thunkAPI.dispatch(getAllReviews());
+            return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
@@ -58,6 +84,20 @@ export const createProductReview = createAsyncThunk<IReview, IReview>(
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const getReviewStatsAdmin = createAsyncThunk<any>(
+    "user/getReviewStatsAdmin",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/review/stats", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
+
+                return thunkAPI.rejectWithValue(error.message)
         }
     }
 )
@@ -85,6 +125,32 @@ export const reviewSlice = createSlice({
             state.error = action.payload;
             state.isLodging = false;
         })
+
+        builder.addCase(deleteReview.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(deleteReview.fulfilled, (state, action) => {
+            state.error = action.payload;
+            toast.error("Deleted Review ")
+            state.isLodging = false;
+        })
+        builder.addCase(deleteReview.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // get all reviews getReviewStatsAdmin
+        builder.addCase(getReviewStatsAdmin.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getReviewStatsAdmin.fulfilled, (state, action) => {
+            state.reviewData = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getReviewStatsAdmin.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
         // get average rating
         builder.addCase(getAverageRatingByProductId.pending, (state) => {
             state.isLodging = true;
@@ -94,6 +160,20 @@ export const reviewSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(getAverageRatingByProductId.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // get all reviews
+
+        builder.addCase(getAllReviews.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getAllReviews.fulfilled, (state, action) => {
+            state.reviews = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getAllReviews.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

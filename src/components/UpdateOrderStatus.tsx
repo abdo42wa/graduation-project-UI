@@ -28,7 +28,7 @@ const UpdateOrderStatus = (props: OrderStatus) => {
 
     const handelApplyDiscount = () => {
         const postObj: IOrderItems = {
-            status,
+            orderStatus: status,
             _id: props.productID
         }
         dispatch(updateSellerOrder(postObj))

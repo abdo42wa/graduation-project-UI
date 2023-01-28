@@ -26,6 +26,9 @@ import Orders from './pages/Orders';
 import EmailVerify from './auth/EmailVerify';
 import AllProducts from './pages/AllProducts';
 import ShopOrder from './pages/ShopOrder';
+import AllProductList from './admin/ProductList';
+import UserList from './admin/UserList';
+import ReviewList from './admin/ReviewList';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -63,6 +66,9 @@ function App() {
           <Route path='/shop/:rejected' element={<SellerShop />} />
           <Route path='/shop/:pending' element={<SellerShop />} />
           <Route path='/admin/orders' element={<OrderList />} />
+          <Route path='/admin/products' element={<AllProductList />} />
+          <Route path='/admin/users' element={<UserList />} />
+          <Route path='/admin/reviews' element={<ReviewList />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/orders/shop' element={<ShopOrder />} />
           <Route path='/admin/approve' element={<ApproveProduct />} />

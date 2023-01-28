@@ -76,12 +76,13 @@ const ShopOrder = () => {
                                                     : sellerOrders).map((row) => (
                                                         <TableRow key={row._id}>
                                                             <TableCell style={{ width: 100 }} align="left" >{row.name!}</TableCell>
-                                                            <TableCell style={{ width: 100 }} align="left" >{row.name!}</TableCell>
+                                                            {/* @ts-ignore */}
+                                                            <TableCell style={{ width: 100 }} align="left" >{row.user?.email}</TableCell>
                                                             <TableCell style={{ width: 200 }} align="right"><img src={row.image} width="200px" /></TableCell>
-                                                            <TableCell style={{ width: 100 }} align="right">{row.status} </TableCell>
+                                                            <TableCell style={{ width: 100 }} align="right">{row.orderStatus} </TableCell>
                                                             <TableCell style={{ width: 100 }} align="right">{row.price} $</TableCell>
                                                             <TableCell style={{ width: 160 }} align="right"><Button onClick={() => setOpenForm(true)}>Update status</Button> <Button onClick={() => setShowDialog(true)}>Get user Address</Button></TableCell>
-                                                            {openForm && <UpdateOrderStatus status={row.status!} open={openForm} onClose={() => handleClose()} productID={row._id!} />}
+                                                            {openForm && <UpdateOrderStatus status={row.orderStatus!} open={openForm} onClose={() => handleClose()} productID={row._id!} />}
                                                             {showDialog && <AddressPopUp open={showDialog} onClose={() => handleClose()} userID={row.user!} />}
 
                                                         </TableRow>

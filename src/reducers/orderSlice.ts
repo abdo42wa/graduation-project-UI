@@ -12,6 +12,7 @@ interface ProductState {
     error: any;
     sellerOrders: IOrderItems[] | [],
     sellerOrder: IOrderItems | null,
+    orderData: [],
 }
 
 const initialState: ProductState = {
@@ -22,12 +23,13 @@ const initialState: ProductState = {
     isLodging: false,
     checkout: null,
     error: null,
+    orderData: []
 
 }
 
 
 
-export const createPaymentSession = createAsyncThunk<any, any>(
+export const createPaymentSession = createAsyncThunk<IOrder, any>(
     "payment/create",
     async (data, thunkAPI) => {
         const { email } = data
@@ -111,6 +113,20 @@ export const updateSellerOrder = createAsyncThunk<IOrderItems, IOrderItems>(
     }
 )
 
+export const getIncomeStatsAdmin = createAsyncThunk<any>(
+    "user/getIncomeStatsAdmin",
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/order/income", ({ withCredentials: true }));
+            return response.data;
+        } catch (error) {
+            if (error instanceof Error)
+
+                return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
 //reducers
 
 export const orderSlice = createSlice({
@@ -156,6 +172,19 @@ export const orderSlice = createSlice({
             state.isLodging = false;
         })
         builder.addCase(getAllOrders.rejected, (state, action) => {
+            state.error = action.payload;
+            state.isLodging = false;
+        })
+
+        // get all orders income for admin
+        builder.addCase(getIncomeStatsAdmin.pending, (state) => {
+            state.isLodging = true;
+        })
+        builder.addCase(getIncomeStatsAdmin.fulfilled, (state, action) => {
+            state.orderData = action.payload;
+            state.isLodging = false;
+        })
+        builder.addCase(getIncomeStatsAdmin.rejected, (state, action) => {
             state.error = action.payload;
             state.isLodging = false;
         })

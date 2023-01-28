@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogTitle, TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { useState } from "react";
+import { render } from "@testing-library/react";
+import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { ICreateProduct } from "../product/ProductType";
 import { rejectProduct } from "../reducers/productSlice";
@@ -16,6 +17,7 @@ type RejectProductProps = {
 
 const RejectProduct = (props: RejectProductProps) => {
     const [message, setMessage] = useState<string | undefined>('');
+    const [socket, setSocket] = useState(null);
     const { onClose, open } = props;
     const dispatch = useAppDispatch();
 
@@ -27,24 +29,29 @@ const RejectProduct = (props: RejectProductProps) => {
     const handelMessage = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setMessage(e.target.value);
     }
-
+    useEffect(() => {
+        //@ts-ignore
+        setSocket(io("http://localhost:5000"));
+    }, [])
     const handelSubmit = () => {
 
-        const socket = io("http://localhost:5000");
-        socket.emit("sendNotification", {
+        //@ts-ignore
+        socket?.emit("sendNotification", {
             productID: props.productID,
-            message: `Your product ${props.productName} got Rejected`,
-            receiverId: props.userID,
+            message: `Your product ${props.productName}  got Rejected`,
+            //@ts-ignore
+            receiverId: props.userID._id,
             reded: false,
         });
 
         console.log({ props })
         const postObj: ICreateProduct = {
             rejectedMessage: message,
+            //@ts-ignore
             _id: props.productID
         }
         dispatch(rejectProduct(postObj))
-
+        console.log(postObj)
         onClose(true);
     }
 

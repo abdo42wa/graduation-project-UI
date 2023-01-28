@@ -67,24 +67,25 @@ const Navbar = () => {
 
   const newNotification = notification.find((x: any) => (x.reded === false))
 
-  const socket = io("http://localhost:5000");
 
+  const socket = io("http://localhost:5000");
   useEffect(() => {
     const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
     setCartCount(() => totalQty);
-    socket.emit("setup", user?._id);
-    console.log(newNotification)
+    //@ts-ignore
+    socket?.emit("setup", user?._id);
 
 
   }, [cart, notification, socket])
 
   useEffect(() => {
-    socket.on("getNotification", (data) => {
+    //@ts-ignore
+    socket?.on("getNotification", (data) => {
       setNotification((prv: any) => [...prv, data])
       console.log(data, user?._id)
     })
     console.log(newNotification)
-  }, [socket])
+  }, [socket, notification])
 
   console.log(notification)
   //639c53c98d98d232f0223046
@@ -176,9 +177,10 @@ const Navbar = () => {
       onClose={handleNotificationClose}
     >
       {notification.map((x: any, index: number) => (
-        <MenuItem key={index} onClick={() => x.reded = true}>{x.message} {x.reded ? <Drafts sx={{ ml: '5px' }} /> : <Markunread sx={{ ml: '5px' }} />}</MenuItem>
-      ))}
-    </Menu>
+        <MenuItem key={index} onClick={() => (x.reded = true, history('/shop'))}>{x.message} {x.reded ? <Drafts sx={{ ml: '5px' }} /> : <Markunread sx={{ ml: '5px' }} />}</MenuItem>
+      ))
+      }
+    </Menu >
   );
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (

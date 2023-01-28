@@ -71,19 +71,19 @@ const CreateProduct = () => {
             countInStock,
             isPublished,
         }
-        if (image.length < 5063) {
-            toast.warning("Image size it to large")
-        } else {
+        // if (image.length < 5063) {
+        //     toast.warning("Image size it to large")
+        // } else {
 
-            dispatch(createProduct(postObj))
-            setImageCloud("");
-            setName("");
-            setBrand("");
-            setDescription("");
-            setPrice(0);
-            setDiscount(0);
-            setCountInStock(0);
-        }
+        dispatch(createProduct(postObj))
+        setImageCloud("");
+        setName("");
+        setBrand("");
+        setDescription("");
+        setPrice(0);
+        setDiscount(0);
+        setCountInStock(0);
+
 
     }
     return (
